@@ -1,0 +1,111 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  password  String
+  role      String    @default("USER") // USER or ADMIN
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
+}
+
+model Service {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  basePrice   Float
+  imageUrl    String
+  category    String   // e.g. "Catering", "Live Station", "Counter"
+  createdAt   DateTime @default(now())
+}
+
+model MenuItem {
+  id           String   @id @default(uuid())
+  name         String
+  description  String
+  price        Float
+  category     String   // Starters, Main Course, Desserts, Snacks, Beverages, Live Counters
+  availability Boolean  @default(true)
+  dietaryTag   String   // VEG, NON_VEG, VEGAN
+  imageUrl     String
+  createdAt    DateTime @default(now())
+}
+
+model Package {
+  id               String    @id @default(uuid())
+  name             String    // Silver, Gold, Platinum, Custom
+  description      String
+  price            Float
+  guestCapacity    Int
+  menuHighlights   String    // Comma-separated or serialized JSON
+  servicesIncluded String    // Comma-separated or serialized JSON
+  isFeatured       Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  bookings         Booking[]
+}
+
+model Booking {
+  id               String   @id @default(uuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventType        String   // Wedding, Corporate, Birthday, etc.
+  date             String   // YYYY-MM-DD
+  time             String   // HH:MM
+  venue            String
+  guestCount       Int
+  packageId        String?
+  package          Package? @relation(fields: [packageId], references: [id])
+  estimatedPrice   Float
+  status           String   @default("PENDING") // PENDING, APPROVED, REJECTED, COMPLETED
+  specialRequests  String?
+  optionalServices String?  // Comma-separated service names/IDs
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model GalleryItem {
+  id        String   @id @default(uuid())
+  imageUrl  String
+  category  String   // Setups, Food, Live Stations, Team, Events
+  caption   String
+  createdAt DateTime @default(now())
+}
+
+model Chef {
+  id          String   @id @default(uuid())
+  name        String
+  designation String   // Head Chef, Sous Chef, etc.
+  specialty   String
+  experience  Int      // years
+  bio         String
+  imageUrl    String
+  createdAt   DateTime @default(now())
+}
+
+model Testimonial {
+  id           String   @id @default(uuid())
+  customerName String
+  content      String
+  rating       Int      // 1 to 5
+  isApproved   Boolean  @default(false)
+  eventDate    String
+  createdAt    DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  status    String   @default("UNREAD") // UNREAD, RESOLVED
+  createdAt DateTime @default(now())
+}
