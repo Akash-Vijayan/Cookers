@@ -5,47 +5,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useQuote } from '@/context/QuoteContext';
-import { Menu, X, Phone, MessageSquare, Mail, MapPin, Clock, Sun, Moon } from 'lucide-react';
+import { Menu, X, Phone, MessageSquare, Mail, MapPin, Clock } from 'lucide-react';
 
 export default function Navbar() {
   const { openQuote } = useQuote();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [theme, setTheme] = useState<'dark' | 'light'>('light');
-
-  // Load theme from localStorage on mount
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
-    const root = document.documentElement;
-    const initial = savedTheme === 'dark' ? 'dark' : 'light';
-    if (initial === 'dark') {
-      root.classList.add('dark');
-      root.classList.remove('light');
-    } else {
-      root.classList.remove('dark');
-      root.classList.add('light');
-    }
-    const timer = setTimeout(() => {
-      setTheme(initial);
-    }, 0);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const toggleTheme = () => {
-    const root = document.documentElement;
-    if (theme === 'light') {
-      setTheme('dark');
-      root.classList.add('dark');
-      root.classList.remove('light');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      setTheme('light');
-      root.classList.remove('dark');
-      root.classList.add('light');
-      localStorage.setItem('theme', 'light');
-    }
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -149,13 +115,6 @@ export default function Navbar() {
             {/* CTA Button on Right */}
             <div className="hidden lg:flex items-center">
               <button
-                onClick={toggleTheme}
-                className="p-2.5 mr-3 text-brass hover:text-foreground transition duration-300 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center border border-brass/25 hover:border-brass/60 rounded-none bg-transparent"
-                aria-label="Toggle theme"
-              >
-                {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              </button>
-              <button
                 onClick={openQuote}
                 className="px-6 py-2.5 border border-brass text-brass hover:bg-carmine hover:border-carmine hover:text-bone font-bold uppercase tracking-widest text-[9px] transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center"
               >
@@ -165,13 +124,6 @@ export default function Navbar() {
  
             {/* Mobile CTA + hamburger menu button */}
             <div className="flex lg:hidden items-center space-x-2">
-              <button
-                onClick={toggleTheme}
-                className="p-2 text-brass hover:text-foreground transition duration-300 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center border border-brass/25 hover:border-brass/60 rounded-none bg-transparent"
-                aria-label="Toggle theme"
-              >
-                {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              </button>
               <button
                 onClick={openQuote}
                 className="px-3.5 py-2 border border-brass text-brass hover:bg-carmine hover:border-carmine hover:text-bone font-bold uppercase tracking-widest text-[9px] transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center"
