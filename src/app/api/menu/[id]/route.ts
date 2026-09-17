@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { cookies } from 'next/headers';
 import { verifyJWT } from '@/lib/jwt';
+import { revalidateTag } from 'next/cache';
 
 async function isAdmin() {
   const cookieStore = await cookies();
@@ -25,7 +26,7 @@ export async function PATCH(
     const body = await req.json();
 
     // Dynamically build update data
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
     if (body.name !== undefined) updateData.name = body.name;
     if (body.description !== undefined) updateData.description = body.description;
     if (body.price !== undefined) updateData.price = parseFloat(body.price);
@@ -38,6 +39,8 @@ export async function PATCH(
       where: { id },
       data: updateData,
     });
+
+    revalidateTag('menu-items', 'max');
 
     return NextResponse.json({
       success: true,
@@ -65,6 +68,8 @@ export async function DELETE(
     await prisma.menuItem.delete({
       where: { id },
     });
+
+    revalidateTag('menu-items', 'max');
 
     return NextResponse.json({
       success: true,

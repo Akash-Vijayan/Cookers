@@ -1,22 +1,42 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { Calendar, Users, Award, ShieldCheck } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
 
 interface StatItemProps {
-  icon: React.ReactNode;
   label: string;
   target: number;
   suffix: string;
 }
 
-function CounterItem({ icon, label, target, suffix }: StatItemProps) {
+function CounterItem({ label, target, suffix }: StatItemProps) {
   const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const itemRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (itemRef.current) {
+      observer.observe(itemRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
     let start = 0;
-    const duration = 2000; // 2 seconds animation
-    const steps = 50;
+    const duration = 2000; // 2 seconds
+    const steps = 60;
     const stepTime = duration / steps;
     const increment = target / steps;
 
@@ -31,21 +51,16 @@ function CounterItem({ icon, label, target, suffix }: StatItemProps) {
     }, stepTime);
 
     return () => clearInterval(timer);
-  }, [target]);
+  }, [target, isVisible]);
 
   return (
-    <div className="bg-card border border-border p-8 rounded-3xl shadow-sm text-center space-y-4 hover:shadow-md hover:border-primary/20 transition-all duration-300">
-      <div className="mx-auto inline-flex bg-primary/10 dark:bg-primary/5 p-4 rounded-2xl text-primary">
-        {icon}
-      </div>
-      <div>
-        <p className="text-3xl md:text-4xl font-black tracking-tight">
-          {count.toLocaleString()}{suffix}
-        </p>
-        <p className="text-sm font-semibold text-foreground/60 mt-1 uppercase tracking-wider">
-          {label}
-        </p>
-      </div>
+    <div ref={itemRef} className="space-y-1 pt-4 lg:pt-0">
+      <h4 className="font-serif italic text-4xl sm:text-5xl text-brass font-light tracking-tight">
+        {count.toLocaleString()}{suffix}
+      </h4>
+      <p className="uppercase tracking-widest text-[9px] text-stats-label font-black">
+        {label}
+      </p>
     </div>
   );
 }
@@ -53,38 +68,33 @@ function CounterItem({ icon, label, target, suffix }: StatItemProps) {
 export default function StatsSection() {
   const stats = [
     {
-      icon: <Calendar className="h-6 w-6" />,
-      label: 'Events Completed',
-      target: 500,
+      label: 'Years of Heritage',
+      target: 18,
       suffix: '+',
     },
     {
-      icon: <Users className="h-6 w-6" />,
-      label: 'Happy Customers',
-      target: 10000,
+      label: 'Feasts Conducted',
+      target: 1500,
       suffix: '+',
     },
     {
-      icon: <Award className="h-6 w-6" />,
-      label: 'Years Experience',
-      target: 14,
+      label: 'Professional Servers',
+      target: 50,
       suffix: '+',
     },
     {
-      icon: <ShieldCheck className="h-6 w-6" />,
-      label: 'Master Chefs',
-      target: 10,
-      suffix: '+',
+      label: 'Traditional Ingredients',
+      target: 100,
+      suffix: '%',
     },
   ];
 
   return (
-    <section className="py-12 bg-cream dark:bg-charcoal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full -mt-16 relative z-20">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+    <section className="py-8 md:py-12 bg-stats-bg border-y border-border/60 relative z-10 transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-y sm:divide-y-0 lg:divide-x divide-border/40">
         {stats.map((item) => (
           <CounterItem
             key={item.label}
-            icon={item.icon}
             label={item.label}
             target={item.target}
             suffix={item.suffix}

@@ -13,7 +13,6 @@ async function getAdminMenuItems() {
   }
 }
 
-export const dynamic = 'force-dynamic';
 
 export default async function AdminMenuPage() {
   const items = await getAdminMenuItems();

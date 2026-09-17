@@ -41,36 +41,38 @@ export default function RegisterPage() {
         setError(res.error || 'Registration failed.');
         setLoading(false);
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred.');
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-cream dark:bg-charcoal">
+    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-background">
       <div className="max-w-md w-full space-y-8 p-8 bg-card border border-border rounded-2xl shadow-xl transition-all duration-300">
         
         {/* Title Block */}
         <div className="text-center">
-          <div className="inline-flex bg-primary p-3 rounded-2xl text-white mb-4 shadow-lg shadow-primary/20">
+          <div className="inline-flex bg-carmine p-3 rounded-2xl text-bone mb-4 shadow-lg">
             <Utensils className="h-6 w-6" />
           </div>
-          <h2 className="text-3xl font-extrabold tracking-tight">Create Account</h2>
+          <h2 className="text-3xl font-extrabold tracking-tight text-foreground">
+            Create <span className="font-serif italic text-brass">Account</span>
+          </h2>
           <p className="mt-2 text-sm text-foreground/75">
-            Join Cookers to book gourmet catering for your next big event.
+            Join DD Cookers to book gourmet catering for your next big event.
           </p>
         </div>
 
         {error && (
-          <div className="flex items-center space-x-2 bg-red-500/10 text-red-500 p-4 rounded-xl text-sm border border-red-500/20 animate-fade-in">
+          <div className="flex items-center space-x-2 bg-carmine/15 text-carmine p-4 rounded-xl text-sm border border-carmine/30 animate-fade-in">
             <AlertCircle className="h-5 w-5 shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         {success && (
-          <div className="flex items-center space-x-2 bg-emerald-500/10 text-emerald-500 p-4 rounded-xl text-sm border border-emerald-500/20 animate-fade-in">
+          <div className="flex items-center space-x-2 bg-brass/15 text-brass p-4 rounded-xl text-sm border border-brass/30 animate-fade-in">
             <CheckCircle className="h-5 w-5 shrink-0" />
             <span>{success}</span>
           </div>
@@ -81,11 +83,11 @@ export default function RegisterPage() {
             
             {/* Full Name Field */}
             <div>
-              <label htmlFor="name" className="block text-sm font-semibold mb-1.5">
+              <label htmlFor="name" className="block text-xs font-bold uppercase text-brass tracking-wider mb-1.5">
                 Full Name
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-foreground/40">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-brass/50">
                   <User className="h-5 w-5" />
                 </span>
                 <input
@@ -95,7 +97,7 @@ export default function RegisterPage() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-foreground/5 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-xl focus:outline-none focus:border-carmine focus:ring-1 focus:ring-carmine/30 text-foreground placeholder:text-foreground/40 transition-all text-sm"
                   placeholder="John Doe"
                 />
               </div>
@@ -103,11 +105,11 @@ export default function RegisterPage() {
 
             {/* Email Address Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold mb-1.5">
+              <label htmlFor="email" className="block text-xs font-bold uppercase text-brass tracking-wider mb-1.5">
                 Email Address
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-foreground/40">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-brass/50">
                   <Mail className="h-5 w-5" />
                 </span>
                 <input
@@ -117,7 +119,7 @@ export default function RegisterPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-foreground/5 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-xl focus:outline-none focus:border-carmine focus:ring-1 focus:ring-carmine/30 text-foreground placeholder:text-foreground/40 transition-all text-sm"
                   placeholder="john@example.com"
                 />
               </div>
@@ -125,11 +127,11 @@ export default function RegisterPage() {
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold mb-1.5">
+              <label htmlFor="password" className="block text-xs font-bold uppercase text-brass tracking-wider mb-1.5">
                 Password
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-foreground/40">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-brass/50">
                   <Lock className="h-5 w-5" />
                 </span>
                 <input
@@ -139,7 +141,7 @@ export default function RegisterPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-foreground/5 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-xl focus:outline-none focus:border-carmine focus:ring-1 focus:ring-carmine/30 text-foreground placeholder:text-foreground/40 transition-all text-sm"
                   placeholder="••••••••"
                 />
               </div>
@@ -147,11 +149,11 @@ export default function RegisterPage() {
 
             {/* Confirm Password Field */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-semibold mb-1.5">
+              <label htmlFor="confirmPassword" className="block text-xs font-bold uppercase text-brass tracking-wider mb-1.5">
                 Confirm Password
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-foreground/40">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-brass/50">
                   <Lock className="h-5 w-5" />
                 </span>
                 <input
@@ -161,7 +163,7 @@ export default function RegisterPage() {
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-foreground/5 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-xl focus:outline-none focus:border-carmine focus:ring-1 focus:ring-carmine/30 text-foreground placeholder:text-foreground/40 transition-all text-sm"
                   placeholder="••••••••"
                 />
               </div>
@@ -173,16 +175,16 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 mt-4 px-4 bg-gradient-to-r from-primary to-secondary hover:from-primary-hover hover:to-secondary-hover text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:hover:scale-100 transition-all duration-300"
+            className="w-full py-3 px-4 bg-gradient-to-r from-[#B32E33] to-[#6E151A] hover:brightness-105 text-bone font-bold rounded-xl shadow-lg transition-all duration-300 cursor-pointer disabled:opacity-50"
           >
-            {loading ? 'Creating Account...' : 'Register'}
+            {loading ? 'Creating Account...' : 'Sign Up'}
           </button>
         </form>
 
-        <div className="text-center mt-6 text-sm text-foreground/75">
+        <div className="text-center mt-6 text-xs text-foreground/75">
           Already have an account?{' '}
-          <Link href="/login" className="font-semibold text-primary hover:text-primary-hover">
-            Login
+          <Link href="/login" className="font-bold text-brass hover:text-brass/80">
+            Log in
           </Link>
         </div>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Calendar, Users, MapPin, DollarSign, Check, X, FileText, Download, Trash, AlertCircle, Sparkles } from 'lucide-react';
+import { Check, X, FileText, Download, Trash, AlertCircle } from 'lucide-react';
 
 interface Booking {
   id: string;
@@ -55,7 +55,7 @@ export default function BookingsAdminClient({ initialBookings }: BookingsAdminCl
   const getStatusStyle = (status: string) => {
     switch (status.toUpperCase()) {
       case 'APPROVED':
-        return 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20';
+        return 'bg-primary/10 text-primary border border-primary/20';
       case 'REJECTED':
         return 'bg-red-500/10 text-red-500 border border-red-500/20';
       case 'COMPLETED':
@@ -89,7 +89,7 @@ export default function BookingsAdminClient({ initialBookings }: BookingsAdminCl
         const data = await res.json();
         setActionError(data.error || 'Failed to update booking status.');
       }
-    } catch (err) {
+    } catch {
       setActionError('An error occurred. Please try again.');
     } finally {
       setLoadingId(null);
@@ -116,7 +116,7 @@ export default function BookingsAdminClient({ initialBookings }: BookingsAdminCl
         const data = await res.json();
         setActionError(data.error || 'Failed to delete booking.');
       }
-    } catch (err) {
+    } catch {
       setActionError('An error occurred.');
     } finally {
       setLoadingId(null);
@@ -147,12 +147,14 @@ export default function BookingsAdminClient({ initialBookings }: BookingsAdminCl
   };
 
   return (
-    <div className="space-y-8 text-charcoal dark:text-cream">
+    <div className="space-y-8 text-foreground">
       
       {/* Title & Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">Manage Event Bookings</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
+            Manage Event <span className="font-serif italic text-brass">Bookings</span>
+          </h1>
           <p className="text-sm text-foreground/60 mt-1">
             Review quote requests, update catering status, and export booking sheets.
           </p>
@@ -160,7 +162,7 @@ export default function BookingsAdminClient({ initialBookings }: BookingsAdminCl
         <button
           onClick={handleExportCSV}
           disabled={filteredBookings.length === 0}
-          className="flex items-center space-x-1.5 px-4 py-2.5 bg-primary hover:bg-primary-hover text-white rounded-xl text-xs font-bold shadow-md transition disabled:opacity-50 cursor-pointer"
+          className="flex items-center space-x-1.5 px-4 py-2.5 bg-carmine hover:bg-carmine/90 text-bone rounded-xl text-xs font-bold shadow-md transition disabled:opacity-50 cursor-pointer"
         >
           <Download className="h-4 w-4" />
           <span>Export CSV</span>
@@ -253,7 +255,7 @@ export default function BookingsAdminClient({ initialBookings }: BookingsAdminCl
                         </p>
                         <p className="text-[10px] text-foreground/60 mt-1">{b.date} @ {b.time}</p>
                       </td>
-                      <td className="p-4 font-black text-primary text-sm">${b.estimatedPrice.toLocaleString()}</td>
+                      <td className="p-4 font-black text-primary text-sm">₹{b.estimatedPrice.toLocaleString()}</td>
                       <td className="p-4">
                         <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full uppercase ${getStatusStyle(b.status)}`}>
                           {b.status}
@@ -265,7 +267,7 @@ export default function BookingsAdminClient({ initialBookings }: BookingsAdminCl
                             <button
                               onClick={() => handleUpdateStatus(b.id, 'APPROVED')}
                               disabled={loadingId === b.id}
-                              className="p-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-all"
+                              className="p-1.5 bg-primary hover:bg-primary-hover text-white rounded-lg transition-all"
                               title="Approve Booking"
                             >
                               <Check className="h-4 w-4" />
@@ -359,7 +361,7 @@ export default function BookingsAdminClient({ initialBookings }: BookingsAdminCl
                   <div>
                     <span className="text-foreground/50 text-[10px] uppercase font-bold block mb-0.5">Special Requests</span>
                     <p className="bg-amber-500/5 text-foreground/85 border border-amber-500/10 p-3 rounded-xl italic leading-relaxed">
-                      "{selectedBooking.specialRequests}"
+                      &quot;{selectedBooking.specialRequests}&quot;
                     </p>
                   </div>
                 )}
@@ -367,7 +369,7 @@ export default function BookingsAdminClient({ initialBookings }: BookingsAdminCl
                 <div className="pt-4 border-t border-border flex justify-between items-center">
                   <div>
                     <span className="text-foreground/50 text-[10px] uppercase font-bold block">Estimated Revenue</span>
-                    <p className="text-2xl font-black text-primary">${selectedBooking.estimatedPrice.toLocaleString()}</p>
+                    <p className="text-2xl font-black text-primary">₹{selectedBooking.estimatedPrice.toLocaleString()}</p>
                   </div>
                   
                   {/* Status operations inside side panel */}
@@ -375,7 +377,7 @@ export default function BookingsAdminClient({ initialBookings }: BookingsAdminCl
                     <div className="flex space-x-1.5">
                       <button
                         onClick={() => handleUpdateStatus(selectedBooking.id, 'APPROVED')}
-                        className="px-3 py-2 bg-emerald-500 text-white font-bold rounded-xl hover:bg-emerald-600 transition"
+                        className="px-3 py-2 bg-primary text-white font-bold rounded-xl hover:bg-primary-hover transition"
                       >
                         Approve
                       </button>

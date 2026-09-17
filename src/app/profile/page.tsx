@@ -35,12 +35,6 @@ export default function ProfilePage() {
     }
   }, [user, authLoading, router]);
 
-  useEffect(() => {
-    if (user) {
-      fetchBookings();
-    }
-  }, [user]);
-
   const fetchBookings = async () => {
     try {
       const res = await fetch('/api/bookings');
@@ -55,14 +49,23 @@ export default function ProfilePage() {
     }
   };
 
+  useEffect(() => {
+    if (user) {
+      const t = setTimeout(() => {
+        fetchBookings();
+      }, 0);
+      return () => clearTimeout(t);
+    }
+  }, [user]);
+
   const getStatusStyle = (status: string) => {
     switch (status.toUpperCase()) {
       case 'APPROVED':
-        return 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20';
+        return 'bg-carmine/15 text-carmine border border-carmine/30';
       case 'REJECTED':
         return 'bg-red-500/10 text-red-500 border border-red-500/20';
       case 'COMPLETED':
-        return 'bg-blue-500/10 text-blue-500 border border-blue-500/20';
+        return 'bg-brass/15 text-brass border border-brass/30';
       default:
         return 'bg-amber-500/10 text-amber-500 border border-amber-500/20';
     }
@@ -70,9 +73,9 @@ export default function ProfilePage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-cream dark:bg-charcoal">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center space-y-4">
-          <div className="h-10 w-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+          <div className="h-10 w-10 border-4 border-brass border-t-transparent rounded-full animate-spin" />
           <p className="text-foreground/75 font-semibold text-sm">Loading profile and bookings...</p>
         </div>
       </div>
@@ -90,24 +93,24 @@ export default function ProfilePage() {
     .reduce((sum, b) => sum + b.estimatedPrice, 0);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-cream dark:bg-charcoal min-h-screen">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-background min-h-screen">
       
       {/* Welcome Banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-primary to-secondary rounded-3xl p-8 md:p-12 text-white mb-12 shadow-xl shadow-primary/10">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#B32E33] to-[#6E151A] rounded-3xl p-8 md:p-12 text-bone mb-12 shadow-xl">
         <div className="relative z-10 max-w-2xl">
-          <span className="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+          <span className="bg-black/20 text-bone text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
             Customer Portal
           </span>
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mt-4">
-            Hello, {user.name}!
+            Hello, <span className="font-serif italic text-brass">{user.name}</span>!
           </h1>
-          <p className="text-white/80 mt-2 text-base max-w-lg leading-relaxed">
+          <p className="text-bone/80 mt-2 text-base max-w-lg leading-relaxed">
             Welcome to your dashboard. Track active events, print invoices, and view details of your booking inquiries.
           </p>
         </div>
         {/* Abstract background shapes */}
         <div className="absolute right-0 bottom-0 opacity-10 transform translate-x-1/4 translate-y-1/4">
-          <Clock className="w-96 h-96" />
+          <Clock className="w-96 h-96 text-bone" />
         </div>
       </div>
 
@@ -117,29 +120,29 @@ export default function ProfilePage() {
         <div className="bg-card border border-border p-6 rounded-2xl shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center space-x-3 mb-6">
-              <div className="bg-primary/10 p-3 rounded-xl text-primary">
+              <div className="bg-brass/15 p-3 rounded-xl text-brass">
                 <User className="h-6 w-6" />
               </div>
               <div>
-                <h3 className="font-bold text-base">Account Details</h3>
+                <h3 className="font-bold text-base text-foreground">Account Details</h3>
                 <span className="text-xs text-foreground/60">Registered Member</span>
               </div>
             </div>
             <div className="space-y-3.5 text-sm">
               <div className="flex items-center space-x-2 text-foreground/80">
-                <Mail className="h-4.5 w-4.5 text-foreground/40" />
+                <Mail className="h-4.5 w-4.5 text-brass/60" />
                 <span className="truncate">{user.email}</span>
               </div>
               <div className="flex items-center space-x-2 text-foreground/80">
-                <Award className="h-4.5 w-4.5 text-foreground/40" />
-                <span>Role: <b className="text-primary">{user.role}</b></span>
+                <Award className="h-4.5 w-4.5 text-brass/60" />
+                <span>Role: <b className="text-brass">{user.role}</b></span>
               </div>
             </div>
           </div>
           <div className="mt-8 pt-4 border-t border-border">
             <button
               onClick={() => router.push('/booking')}
-              className="w-full py-2.5 rounded-xl bg-primary text-white font-bold text-sm text-center shadow-md hover:bg-primary-hover active:scale-[0.98] transition-all"
+              className="w-full py-2.5 rounded-xl bg-carmine text-bone font-bold text-sm text-center shadow-md hover:bg-carmine/90 active:scale-[0.98] transition-all cursor-pointer"
             >
               Book New Event
             </button>
@@ -152,29 +155,29 @@ export default function ProfilePage() {
             <Clock className="w-8 h-8" />
           </div>
           <div>
-            <p className="text-2xl font-black">{pendingBookings}</p>
+            <p className="text-2xl font-black text-foreground">{pendingBookings}</p>
             <p className="text-sm font-semibold text-foreground/65">Pending Requests</p>
           </div>
         </div>
 
         {/* Stats 2 */}
         <div className="bg-card border border-border p-6 rounded-2xl shadow-sm flex items-center space-x-5">
-          <div className="bg-emerald-500/10 p-4 rounded-xl text-emerald-500">
+          <div className="bg-carmine/15 p-4 rounded-xl text-carmine">
             <CheckCircle2 className="w-8 h-8" />
           </div>
           <div>
-            <p className="text-2xl font-black">{approvedBookings}</p>
+            <p className="text-2xl font-black text-foreground">{approvedBookings}</p>
             <p className="text-sm font-semibold text-foreground/65">Approved Events</p>
           </div>
         </div>
 
         {/* Stats 3 */}
         <div className="bg-card border border-border p-6 rounded-2xl shadow-sm flex items-center space-x-5">
-          <div className="bg-primary/10 p-4 rounded-xl text-primary">
+          <div className="bg-brass/15 p-4 rounded-xl text-brass">
             <DollarSign className="w-8 h-8" />
           </div>
           <div>
-            <p className="text-2xl font-black">${totalInvested.toLocaleString()}</p>
+            <p className="text-2xl font-black text-brass">₹{totalInvested.toLocaleString()}</p>
             <p className="text-sm font-semibold text-foreground/65">Approved Value</p>
           </div>
         </div>
@@ -184,18 +187,18 @@ export default function ProfilePage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Bookings List */}
         <div className="lg:col-span-2 space-y-6">
-          <h2 className="text-2xl font-extrabold tracking-tight">Your Event Bookings</h2>
+          <h2 className="text-2xl font-extrabold tracking-tight text-foreground">Your Event Bookings</h2>
 
           {totalBookings === 0 ? (
             <div className="bg-card border border-border p-12 text-center rounded-2xl shadow-sm">
               <Calendar className="mx-auto h-12 w-12 text-foreground/30 mb-4" />
-              <h3 className="text-lg font-bold">No Bookings Found</h3>
+              <h3 className="text-lg font-bold text-foreground">No Bookings Found</h3>
               <p className="text-sm text-foreground/60 mt-1 max-w-sm mx-auto">
-                You haven't submitted any catering requests yet. Get started by designing your package and event details!
+                You haven&apos;t submitted any catering requests yet. Get started by designing your package and event details!
               </p>
               <button
                 onClick={() => router.push('/booking')}
-                className="mt-6 px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold text-sm shadow-md"
+                className="mt-6 px-6 py-2.5 rounded-xl bg-carmine hover:bg-carmine/90 text-bone font-bold text-sm shadow-md cursor-pointer"
               >
                 Plan Event Now
               </button>
@@ -207,7 +210,7 @@ export default function ProfilePage() {
                   key={booking.id}
                   onClick={() => setSelectedBooking(booking)}
                   className={`bg-card border p-5 rounded-2xl shadow-sm hover:shadow-md cursor-pointer transition-all duration-300 ${
-                    selectedBooking?.id === booking.id ? 'border-primary ring-2 ring-primary/10' : 'border-border'
+                    selectedBooking?.id === booking.id ? 'border-brass ring-2 ring-brass/20' : 'border-border hover:border-brass/40'
                   }`}
                 >
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
@@ -215,28 +218,28 @@ export default function ProfilePage() {
                       <div className="flex items-center space-x-3">
                         <span className="font-extrabold text-lg text-foreground">{booking.eventType}</span>
                         {booking.package && (
-                          <span className="bg-primary/10 text-primary text-xs font-bold px-2.5 py-0.5 rounded-full">
+                          <span className="bg-brass/10 border border-brass/20 text-brass text-xs font-bold px-2.5 py-0.5 rounded-full">
                             {booking.package.name}
                           </span>
                         )}
                       </div>
                       <div className="grid grid-cols-2 gap-x-6 gap-y-2 mt-3 text-sm text-foreground/75">
                         <span className="flex items-center space-x-1.5">
-                          <Calendar className="h-4 w-4 text-foreground/40 shrink-0" />
+                          <Calendar className="h-4 w-4 text-brass/70 shrink-0" />
                           <span>{booking.date} @ {booking.time}</span>
                         </span>
                         <span className="flex items-center space-x-1.5">
-                          <Users className="h-4 w-4 text-foreground/40 shrink-0" />
+                          <Users className="h-4 w-4 text-brass/70 shrink-0" />
                           <span>{booking.guestCount} guests</span>
                         </span>
                         <span className="flex items-center space-x-1.5 col-span-2">
-                          <MapPin className="h-4 w-4 text-foreground/40 shrink-0" />
+                          <MapPin className="h-4 w-4 text-brass/70 shrink-0" />
                           <span className="truncate">{booking.venue}</span>
                         </span>
                       </div>
                     </div>
                     <div className="flex sm:flex-col items-end justify-between border-t sm:border-t-0 pt-3 sm:pt-0 border-border">
-                      <span className="font-black text-xl text-primary">${booking.estimatedPrice.toLocaleString()}</span>
+                      <span className="font-black text-xl text-brass">₹{booking.estimatedPrice.toLocaleString()}</span>
                       <span className={`text-xs font-bold px-3 py-1 rounded-full uppercase mt-2 ${getStatusStyle(booking.status)}`}>
                         {booking.status}
                       </span>
@@ -262,14 +265,14 @@ export default function ProfilePage() {
               <div className="space-y-4 text-sm leading-relaxed">
                 <div>
                   <span className="text-foreground/50 text-xs uppercase font-bold block mb-1">Event Reference</span>
-                  <code className="text-xs bg-foreground/5 p-1 rounded text-primary block truncate font-mono">
+                  <code className="text-xs bg-card p-1 rounded text-brass border border-border block truncate font-mono">
                     {selectedBooking.id}
                   </code>
                 </div>
 
                 <div>
                   <span className="text-foreground/50 text-xs uppercase font-bold block mb-1">Catering Details</span>
-                  <p className="font-semibold text-base">{selectedBooking.eventType}</p>
+                  <p className="font-semibold text-base text-foreground">{selectedBooking.eventType}</p>
                   <p className="text-foreground/60 text-xs mt-0.5">
                     Package: {selectedBooking.package ? selectedBooking.package.name : 'Custom Selection'}
                   </p>
@@ -278,18 +281,18 @@ export default function ProfilePage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <span className="text-foreground/50 text-xs uppercase font-bold block mb-0.5">Date & Time</span>
-                    <p className="font-medium text-xs">{selectedBooking.date}</p>
+                    <p className="font-medium text-xs text-foreground">{selectedBooking.date}</p>
                     <p className="text-foreground/60 text-xs font-medium">{selectedBooking.time}</p>
                   </div>
                   <div>
                     <span className="text-foreground/50 text-xs uppercase font-bold block mb-0.5">Guest Count</span>
-                    <p className="font-medium text-xs">{selectedBooking.guestCount} Persons</p>
+                    <p className="font-medium text-xs text-foreground">{selectedBooking.guestCount} Persons</p>
                   </div>
                 </div>
 
                 <div>
                   <span className="text-foreground/50 text-xs uppercase font-bold block mb-0.5">Venue Location</span>
-                  <p className="text-xs font-medium">{selectedBooking.venue}</p>
+                  <p className="text-xs font-medium text-foreground">{selectedBooking.venue}</p>
                 </div>
 
                 {selectedBooking.optionalServices && (
@@ -297,7 +300,7 @@ export default function ProfilePage() {
                     <span className="text-foreground/50 text-xs uppercase font-bold block mb-1">Selected Add-ons</span>
                     <div className="flex flex-wrap gap-1.5">
                       {selectedBooking.optionalServices.split(',').map((svc) => (
-                        <span key={svc} className="bg-foreground/5 text-foreground/75 px-2 py-0.5 rounded-full text-xs font-medium border border-border">
+                        <span key={svc} className="bg-brass/10 text-brass px-2 py-0.5 rounded-full text-xs font-medium border border-brass/20">
                           {svc.trim()}
                         </span>
                       ))}
@@ -308,8 +311,8 @@ export default function ProfilePage() {
                 {selectedBooking.specialRequests && (
                   <div>
                     <span className="text-foreground/50 text-xs uppercase font-bold block mb-0.5">Special Requests</span>
-                    <p className="text-xs bg-amber-500/5 text-foreground/80 p-3 rounded-lg border border-amber-500/10 italic">
-                      "{selectedBooking.specialRequests}"
+                    <p className="text-xs bg-card text-foreground/80 p-3 rounded-lg border border-border italic">
+                      &quot;{selectedBooking.specialRequests}&quot;
                     </p>
                   </div>
                 )}
@@ -317,15 +320,15 @@ export default function ProfilePage() {
                 <div className="pt-4 border-t border-border flex justify-between items-center">
                   <div>
                     <span className="text-foreground/50 text-xs uppercase font-bold">Total Quote</span>
-                    <p className="text-2xl font-black text-primary">${selectedBooking.estimatedPrice.toLocaleString()}</p>
+                    <p className="text-2xl font-black text-brass">₹{selectedBooking.estimatedPrice.toLocaleString()}</p>
                   </div>
                   <button
                     onClick={() => {
                       window.print();
                     }}
-                    className="flex items-center space-x-1.5 px-4 py-2 bg-foreground/5 border border-border hover:bg-foreground/10 rounded-xl text-xs font-bold transition-all"
+                    className="flex items-center space-x-1.5 px-4 py-2 bg-card border border-border hover:border-brass/50 rounded-xl text-xs font-bold transition-all cursor-pointer"
                   >
-                    <FileText className="h-4 w-4" />
+                    <FileText className="h-4 w-4 text-brass" />
                     <span>Print Invoice</span>
                   </button>
                 </div>

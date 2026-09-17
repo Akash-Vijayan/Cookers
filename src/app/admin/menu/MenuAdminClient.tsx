@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Plus, Edit3, Trash, X, Save, ToggleLeft, ToggleRight, CheckCircle2, AlertCircle, Search, Utensils } from 'lucide-react';
+import { Plus, Edit3, Trash, X, Save, ToggleLeft, ToggleRight, CheckCircle2, AlertCircle } from 'lucide-react';
 
 interface MenuItem {
   id: string;
   name: string;
   description: string;
-  price: number;
+  price: number | null;
   category: string;
   availability: boolean;
   dietaryTag: string;
@@ -73,7 +73,7 @@ export default function MenuAdminClient({ initialItems }: MenuAdminClientProps) 
     setEditingItem(item);
     setName(item.name);
     setDescription(item.description);
-    setPrice(item.price.toString());
+    setPrice(item.price?.toString() ?? '');
     setCategory(item.category);
     setDietaryTag(item.dietaryTag);
     setImageUrl(item.imageUrl);
@@ -153,7 +153,7 @@ export default function MenuAdminClient({ initialItems }: MenuAdminClientProps) 
           setError(data.error || 'Failed to add menu item.');
         }
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred. Please verify inputs.');
     } finally {
       setLoading(false);
@@ -182,19 +182,21 @@ export default function MenuAdminClient({ initialItems }: MenuAdminClientProps) 
   };
 
   return (
-    <div className="space-y-8 text-charcoal dark:text-cream">
+    <div className="space-y-8 text-foreground">
       
       {/* Title Bar */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">Menu Catalog</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
+            Menu <span className="font-serif italic text-brass">Catalog</span>
+          </h1>
           <p className="text-sm text-foreground/60 mt-1">
             Create, update, toggle availability, or delete appetizers, entrees, and dessert bars.
           </p>
         </div>
         <button
           onClick={openAddModal}
-          className="flex items-center space-x-1.5 px-4.5 py-2.5 bg-primary hover:bg-primary-hover text-white rounded-xl text-xs font-bold shadow-md cursor-pointer transition"
+          className="flex items-center space-x-1.5 px-4.5 py-2.5 bg-carmine hover:bg-carmine/90 text-bone rounded-xl text-xs font-bold shadow-md cursor-pointer transition"
         >
           <Plus className="h-4.5 w-4.5" />
           <span>Add New Dish</span>
@@ -256,7 +258,8 @@ export default function MenuAdminClient({ initialItems }: MenuAdminClientProps) 
                   <tr key={item.id} className="hover:bg-foreground/2">
                     <td className="p-4 flex items-center space-x-3.5">
                       <div className="h-12 w-12 rounded-xl overflow-hidden shrink-0 border border-border bg-stone-100">
-                        <img src={item.imageUrl} alt={item.name} className="h-full w-full object-cover" />
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={item.imageUrl} alt={item.name} width={48} height={48} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                       </div>
                       <div>
                         <p className="font-extrabold text-sm text-foreground">{item.name}</p>
@@ -266,14 +269,14 @@ export default function MenuAdminClient({ initialItems }: MenuAdminClientProps) 
                     <td className="p-4 font-semibold text-foreground/75">{item.category}</td>
                     <td className="p-4">
                       <span className={`text-[9px] font-bold px-2.5 py-0.5 rounded-full ${
-                        item.dietaryTag === 'VEG' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' :
-                        item.dietaryTag === 'VEGAN' ? 'bg-teal-500/10 text-teal-500 border border-teal-500/20' :
+                        item.dietaryTag === 'VEG' ? 'bg-primary/10 text-primary border border-primary/20' :
+                        item.dietaryTag === 'VEGAN' ? 'bg-primary/15 text-primary border border-primary/30' :
                         'bg-rose-500/10 text-rose-500 border border-rose-500/20'
                       }`}>
                         {item.dietaryTag}
                       </span>
                     </td>
-                    <td className="p-4 font-black text-primary text-sm">${item.price.toLocaleString()}</td>
+                    <td className="p-4 font-black text-primary text-sm">{item.price != null ? `₹${item.price.toLocaleString()}` : '-'}</td>
                     <td className="p-4 text-center">
                       <button
                         onClick={() => handleToggleAvailability(item.id, item.availability)}
@@ -336,7 +339,7 @@ export default function MenuAdminClient({ initialItems }: MenuAdminClientProps) 
 
             {success ? (
               <div className="text-center py-10 space-y-3">
-                <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-500" />
+                <CheckCircle2 className="mx-auto h-12 w-12 text-primary" />
                 <h4 className="font-extrabold text-lg">{success}</h4>
               </div>
             ) : (
@@ -362,14 +365,14 @@ export default function MenuAdminClient({ initialItems }: MenuAdminClientProps) 
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-foreground/50 uppercase mb-1.5">Plate Price ($)</label>
+                    <label className="block text-foreground/50 uppercase mb-1.5">Plate Price (₹)</label>
                     <input
                       type="number"
                       required
                       step="0.01"
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
-                      placeholder="e.g. 15.99"
+                      placeholder="e.g. 250"
                       className="w-full px-4 py-2.5 bg-foreground/5 border border-border rounded-xl focus:outline-none focus:ring-1 focus:ring-primary text-sm"
                     />
                   </div>

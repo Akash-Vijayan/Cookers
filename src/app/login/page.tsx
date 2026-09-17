@@ -39,7 +39,7 @@ function LoginContent() {
         setError(res.error || 'Invalid credentials');
         setLoading(false);
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred.');
       setLoading(false);
     }
@@ -50,17 +50,19 @@ function LoginContent() {
       
       {/* Title Block */}
       <div className="text-center">
-        <div className="inline-flex bg-primary p-3 rounded-2xl text-white mb-4 shadow-lg shadow-primary/20">
+        <div className="inline-flex bg-carmine p-3 rounded-2xl text-bone mb-4 shadow-lg">
           <Utensils className="h-6 w-6" />
         </div>
-        <h2 className="text-3xl font-extrabold tracking-tight">Welcome Back</h2>
+        <h2 className="text-3xl font-extrabold tracking-tight text-foreground">
+          Welcome <span className="font-serif italic text-brass">Back</span>
+        </h2>
         <p className="mt-2 text-sm text-foreground/75">
           Log in to manage bookings, view quotes, or configure menus.
         </p>
       </div>
 
       {error && (
-        <div className="flex items-center space-x-2 bg-red-500/10 text-red-500 p-4 rounded-xl text-sm border border-red-500/20 animate-fade-in">
+        <div className="flex items-center space-x-2 bg-carmine/15 text-carmine p-4 rounded-xl text-sm border border-carmine/30 animate-fade-in">
           <AlertCircle className="h-5 w-5 shrink-0" />
           <span>{error}</span>
         </div>
@@ -71,11 +73,11 @@ function LoginContent() {
           
           {/* Email Field */}
           <div>
-            <label htmlFor="email" className="block text-sm font-semibold mb-2">
+            <label htmlFor="email" className="block text-xs font-bold uppercase text-brass tracking-wider mb-2">
               Email Address
             </label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-foreground/40">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-brass/50">
                 <Mail className="h-5 w-5" />
               </span>
               <input
@@ -85,7 +87,7 @@ function LoginContent() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-foreground/5 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-xl focus:outline-none focus:border-carmine focus:ring-1 focus:ring-carmine/30 text-foreground placeholder:text-foreground/40 transition-all text-sm"
                 placeholder="name@example.com"
               />
             </div>
@@ -93,11 +95,11 @@ function LoginContent() {
 
           {/* Password Field */}
           <div>
-            <label htmlFor="password" className="block text-sm font-semibold mb-2">
+            <label htmlFor="password" className="block text-xs font-bold uppercase text-brass tracking-wider mb-2">
               Password
             </label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-foreground/40">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-brass/50">
                 <Lock className="h-5 w-5" />
               </span>
               <input
@@ -107,7 +109,7 @@ function LoginContent() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-foreground/5 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-xl focus:outline-none focus:border-carmine focus:ring-1 focus:ring-carmine/30 text-foreground placeholder:text-foreground/40 transition-all text-sm"
                 placeholder="••••••••"
               />
             </div>
@@ -121,13 +123,13 @@ function LoginContent() {
               id="remember-me"
               name="remember-me"
               type="checkbox"
-              className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
+              className="h-4 w-4 text-carmine focus:ring-carmine border-border rounded accent-[#B32E33]"
             />
-            <label htmlFor="remember-me" className="ml-2 text-foreground/75">
+            <label htmlFor="remember-me" className="ml-2 text-foreground/75 text-xs">
               Remember me
             </label>
           </div>
-          <Link href="/login" className="font-semibold text-primary hover:text-primary-hover">
+          <Link href="/login" className="font-semibold text-brass hover:text-brass/80 text-xs">
             Forgot password?
           </Link>
         </div>
@@ -136,15 +138,15 @@ function LoginContent() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 px-4 bg-gradient-to-r from-primary to-secondary hover:from-primary-hover hover:to-secondary-hover text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:hover:scale-100 transition-all duration-300"
+          className="w-full py-3 px-4 bg-gradient-to-r from-[#B32E33] to-[#6E151A] hover:brightness-105 text-bone font-bold rounded-xl shadow-lg transition-all duration-300 cursor-pointer disabled:opacity-50"
         >
           {loading ? 'Logging in...' : 'Sign In'}
         </button>
       </form>
 
-      <div className="text-center mt-6 text-sm text-foreground/75">
-        Don't have an account?{' '}
-        <Link href="/register" className="font-semibold text-primary hover:text-primary-hover">
+      <div className="text-center mt-6 text-xs text-foreground/75">
+        Don&apos;t have an account?{' '}
+        <Link href="/register" className="font-bold text-brass hover:text-brass/80">
           Register now
         </Link>
       </div>
@@ -155,10 +157,10 @@ function LoginContent() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-cream dark:bg-charcoal">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-background">
       <Suspense fallback={
         <div className="max-w-md w-full p-8 bg-card border border-border rounded-2xl shadow-xl flex flex-col items-center justify-center min-h-[300px]">
-          <div className="h-10 w-10 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
+          <div className="h-10 w-10 border-4 border-brass border-t-transparent rounded-full animate-spin mb-4" />
           <p className="text-foreground/60 text-sm font-semibold">Preparing login portal...</p>
         </div>
       }>

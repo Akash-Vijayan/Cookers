@@ -3,8 +3,8 @@ import { cookies } from 'next/headers';
 import { verifyJWT } from '@/lib/jwt';
 
 export async function GET() {
+  const cookieStore = await cookies();
   try {
-    const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
 
     if (!token) {

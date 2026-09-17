@@ -22,7 +22,7 @@ export default function TestimonialSlider({ testimonials }: TestimonialSliderPro
     {
       id: '1',
       customerName: 'Aishwarya Roy',
-      content: 'Cookers handled our wedding food for 250 guests. The Gold Package was amazing! The Live Pasta and BBQ tikkas were the highlight. Every single guest praised the taste!',
+      content: 'DD Cookers handled our wedding food for 250 guests. The Gold Package was amazing! The Live Pasta and BBQ tikkas were the highlight. Every single guest praised the taste!',
       rating: 5,
       eventDate: '2026-05-12',
     },
@@ -71,7 +71,7 @@ export default function TestimonialSlider({ testimonials }: TestimonialSliderPro
 
           {/* Testimonial Quote */}
           <p className="text-lg md:text-xl font-medium leading-relaxed italic text-foreground/90">
-            "{list[activeIndex].content}"
+            &quot;{list[activeIndex].content}&quot;
           </p>
 
           {/* User Details */}

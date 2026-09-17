@@ -32,7 +32,7 @@ model MenuItem {
   id           String   @id @default(uuid())
   name         String
   description  String
-  price        Float
+  price        Float?
   category     String   // Starters, Main Course, Desserts, Snacks, Beverages, Live Counters
   availability Boolean  @default(true)
   dietaryTag   String   // VEG, NON_VEG, VEGAN

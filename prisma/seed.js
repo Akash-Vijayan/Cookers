@@ -1,5 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcryptjs');
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
@@ -21,7 +21,7 @@ async function main() {
   const adminPassword = await bcrypt.hash('admin123', 10);
   const customerPassword = await bcrypt.hash('customer123', 10);
 
-  const admin = await prisma.user.create({
+  const _admin = await prisma.user.create({
     data: {
       name: 'DD Admin',
       email: 'admin@cookers.com',
@@ -42,7 +42,7 @@ async function main() {
   console.log('Users seeded successfully.');
 
   // 3. Create Packages
-  const silverPkg = await prisma.package.create({
+  const _silverPkg = await prisma.package.create({
     data: {
       name: 'Silver Package',
       description: 'Ideal for intimate gatherings, small birthdays, or cozy family get-togethers.',
@@ -66,7 +66,7 @@ async function main() {
     },
   });
 
-  const platinumPkg = await prisma.package.create({
+  const _platinumPkg = await prisma.package.create({
     data: {
       name: 'Platinum Package',
       description: 'A lavish, luxury menu tailored for large weddings, elite corporate galas, and grand celebrations.',
@@ -159,118 +159,115 @@ async function main() {
   }
   console.log('Services seeded successfully.');
 
-  // 5. Create Menu Items
+  // 5. Create Menu Items — DD Cookers Real Menu
   const menuItems = [
-    // Starters
-    {
-      name: 'Paneer Tikka',
-      description: 'Cottage cheese cubes marinated in yogurt spices, grilled in clay oven.',
-      price: 150,
-      category: 'Starters',
-      availability: true,
-      dietaryTag: 'VEG',
-      imageUrl: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      name: 'Chicken Seekh Kebab',
-      description: 'Minced chicken skewers spiced with fresh herbs, roasted over hot charcoal.',
-      price: 180,
-      category: 'Starters',
-      availability: true,
-      dietaryTag: 'NON_VEG',
-      imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      name: 'Crispy Spring Rolls',
-      description: 'Crisp wrapper rolled with shredded vegetables and sweet-sour glaze.',
-      price: 120,
-      category: 'Starters',
-      availability: true,
-      dietaryTag: 'VEGAN',
-      imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
-    },
+    // ===== BREAKFAST (14 items) =====
+    { name: 'Idly', description: 'Soft, fluffy steamed rice cakes — a classic South Indian breakfast staple.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Dosai', description: 'Crispy golden rice and lentil crepe served with sambar and chutney.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1601050690597-df056fb4ce78?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Poori', description: 'Puffed whole wheat deep-fried bread served with potato masala.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Pongal', description: 'Creamy rice and lentils tempered with pepper, cumin, ginger, and cashews.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1645177625172-89574ec0aa09?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Masala Dosai', description: 'Crisp rice crepe stuffed with spiced potato filling and red garlic chutney.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Appam', description: 'Lacy fermented rice crepe with soft center, served with coconut milk.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1601050690597-df056fb4ce78?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Onion Dosai', description: 'Crispy crepe loaded with caramelized onions, green chillies, and coriander.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Podi Dosai', description: 'Crispy rice crepe coated with house-ground spiced lentil powder and ghee.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Sambar', description: 'Slow-simmered vegetable stew with drumsticks, tamarind, and hand-pounded spices.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Coconut Chutney', description: 'Freshly grated coconut ground with green chillies and tempered with mustard seeds.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1601050690597-df056fb4ce78?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Spicy Chutney', description: 'Tangy and spicy tomato-onion chutney roasted with red chillies and south Indian spices.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1601050690597-df056fb4ce78?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Vada', description: 'Crispy golden deep-fried lentil doughnuts seasoned with pepper, ginger, and curry leaves.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Tea Coffee', description: 'Freshly brewed filter coffee and aromatic tea — traditional Tamil Nadu style.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Kesari', description: 'Warm, fragrant semolina sweet cooked with ghee, saffron, cashews, and raisins.', category: 'Breakfast', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1601050690597-df056fb4ce78?auto=format&fit=crop&w=500&q=80' },
 
-    // Main Course
-    {
-      name: 'Butter Chicken',
-      description: 'Tender chicken tikka cooked in rich, creamy tomato gravy with butter and fenugreek.',
-      price: 350,
-      category: 'Main Course',
-      availability: true,
-      dietaryTag: 'NON_VEG',
-      imageUrl: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      name: 'Paneer Butter Masala',
-      description: 'Cottage cheese cubes tossed in sweetish cream, cashew, and tomato gravy.',
-      price: 280,
-      category: 'Main Course',
-      availability: true,
-      dietaryTag: 'VEG',
-      imageUrl: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      name: 'Aromatic Veg Pulao',
-      description: 'Fragrant basmati rice cooked with fresh seasonal vegetables and whole spices.',
-      price: 200,
-      category: 'Main Course',
-      availability: true,
-      dietaryTag: 'VEGAN',
-      imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80',
-    },
+    // ===== BIRYANI (4 items) =====
+    { name: 'Mutton Biryani', description: 'Tender mutton pieces layered with aromatic basmati rice, slow-cooked dum style.', category: 'Biryani', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Chicken Biryani', description: 'Juicy chicken marinated in exotic spices, layered with fragrant basmati rice.', category: 'Biryani', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Seela Fish Biryani', description: 'Fresh Seela fish fillets cooked with spices and long-grain basmati rice.', category: 'Biryani', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Prawn Biryani', description: 'Succulent prawns cooked with south Indian spices and aromatic rice.', category: 'Biryani', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
 
-    // Desserts
-    {
-      name: 'Hot Gulab Jamun',
-      description: 'Sweet berry-sized milk solids fried and soaked in cardamom rose syrup.',
-      price: 80,
-      category: 'Desserts',
-      availability: true,
-      dietaryTag: 'VEG',
-      imageUrl: 'https://images.unsplash.com/photo-1601050690597-df056fb4ce78?auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      name: 'Creamy Rasmalai',
-      description: 'Flattened paneer discs soaked in thickened, saffron-flavored milk.',
-      price: 100,
-      category: 'Desserts',
-      availability: true,
-      dietaryTag: 'VEG',
-      imageUrl: 'https://images.unsplash.com/photo-1621303837474-61fd7e72251a?auto=format&fit=crop&w=800&q=80',
-    },
+    // ===== SPECIAL BIRYANI (14 items) =====
+    { name: 'Hyderabadi Biryani', description: 'Classic Hyderabadi dum biryani with saffron-infused rice and slow-cooked meat.', category: 'Special Biryani', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Aatukaal Biryani (Seeraga Samba)', description: 'Tirunelveli-style goat leg biryani with aromatic seeraga samba rice.', category: 'Special Biryani', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Nattu Kozhi Biryani', description: 'Country chicken biryani with traditional spices and hand-pounded masala.', category: 'Special Biryani', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Turkey Biryani', description: 'Tender turkey meat slow-cooked with fragrant basmati rice and exotic spices.', category: 'Special Biryani', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Kaadai Biryani', description: 'Quail biryani — a rare delicacy with tender quail and aromatic rice.', category: 'Special Biryani', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Egg Biryani', description: 'Boiled eggs cooked with spiced rice and aromatic herbs.', category: 'Special Biryani', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Idiyappam Biryani', description: 'String hoppers infused with biryani spices — a unique Tirunelveli specialty.', category: 'Special Biryani', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Semiya Biryani', description: 'Vermicelli biryani — delicate sevai cooked with spices and ghee.', category: 'Special Biryani', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Mushroom Biryani', description: 'Fresh mushrooms cooked with aromatic rice and whole spices.', category: 'Special Biryani', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Paneer Biryani', description: 'Cottage cheese cubes layered with saffron rice and mild spices.', category: 'Special Biryani', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Veg Biryani (Gopi 65, Gravy)', description: 'Vegetable biryani topped with crispy Gopi 65 and rich gravy.', category: 'Special Biryani', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Plain Biryani', description: 'Aromatic basmati rice cooked with whole garam masala — simple and flavorful.', category: 'Special Biryani', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Kushka Biryani', description: 'Spiced plain biryani rice — the perfect accompaniment to any gravy.', category: 'Special Biryani', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Thakkali Biryani', description: 'Tangy tomato-based biryani with south Indian spice blend.', category: 'Special Biryani', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
 
-    // Snacks
-    {
-      name: 'Crispy Samosa',
-      description: 'Golden pastry shell stuffed with spicy potato and pea filling.',
-      price: 40,
-      category: 'Snacks',
-      availability: true,
-      dietaryTag: 'VEGAN',
-      imageUrl: 'https://images.unsplash.com/photo-1601050690597-df056fb4ce78?auto=format&fit=crop&w=800&q=80',
-    },
+    // ===== RICE VARIETIES (15 items) =====
+    { name: 'Mutton Ghee Rice', description: 'Fragrant basmati rice cooked with tender mutton pieces and pure ghee.', category: 'Rice Varieties', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Chicken Ghee Rice', description: 'Aromatic rice cooked with succulent chicken pieces and ghee.', category: 'Rice Varieties', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Normal Rice (Mutton)', description: 'Steamed rice served with mutton curry — simple comfort food.', category: 'Rice Varieties', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Normal Rice (Chicken)', description: 'Steamed rice served with chicken curry — a wholesome meal.', category: 'Rice Varieties', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Marunthu Soru', description: 'Medicinal rice cooked with herbs and traditional spices — a Tirunelveli specialty.', category: 'Rice Varieties', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Curd Rice', description: 'Creamy yogurt rice tempered with mustard, curry leaves, and green chillies.', category: 'Rice Varieties', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Lemon Rice', description: 'Tangy rice tempered with peanuts, mustard seeds, turmeric, and fresh lemon.', category: 'Rice Varieties', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Tamarind Rice', description: 'Tangy puliyodharai rice with tamarind paste, peanuts, and south Indian spices.', category: 'Rice Varieties', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Coconut Rice', description: 'Mild and fragrant rice mixed with freshly grated coconut and tempering.', category: 'Rice Varieties', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Candy Rice', description: 'Sweet jaggery-infused rice with cardamom, cashews, and ghee.', category: 'Rice Varieties', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Tomato Rice', description: 'Tangy rice cooked with ripe tomatoes, onions, and aromatic spices.', category: 'Rice Varieties', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Sambar Rice', description: 'Rice mixed with hot sambar, ghee, and a medley of vegetables.', category: 'Rice Varieties', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Curry Leaves Rice', description: 'Aromatic rice infused with fresh curry leaves and south Indian tempering.', category: 'Rice Varieties', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Coriander Rice', description: 'Fresh coriander-infused rice with mild spices and lemon juice.', category: 'Rice Varieties', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Veg Rice', description: 'Mixed vegetable rice cooked with seasonal vegetables and mild spices.', category: 'Rice Varieties', availability: true, dietaryTag: 'VEG', imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80' },
 
-    // Beverages
-    {
-      name: 'Mint Mojito',
-      description: 'Refreshing carbonated water with lime juice, sugar syrup, and fresh mint leaves.',
-      price: 110,
-      category: 'Beverages',
-      availability: true,
-      dietaryTag: 'VEGAN',
-      imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80',
-    },
+    // ===== STARTERS (41 items) =====
+    // Mutton Starters (6)
+    { name: 'Mutton Chaaps', description: 'Tender mutton ribs marinated in spices and grilled to smoky perfection.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Mutton Chukka', description: 'Spicy and dry mutton fry with roasted coconut and curry leaves.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Mutton Vettai Kari', description: 'Country-style mutton curry slow-cooked in iron wok with rustic spices.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Mutton Boneless Gravy', description: 'Succulent boneless mutton pieces in a rich, aromatic gravy.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Mutton Fry', description: 'Crispy-fried mutton pieces tossed with onions and spicy masala.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Mutton Keema', description: 'Minced mutton cooked with onions, tomatoes, and aromatic spices.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=500&q=80' },
 
-    // Live Counters
-    {
-      name: 'Live Pasta Counter',
-      description: 'Penne or fusilli made live in Alfredo, Marinara, or Pesto sauce with veggies.',
-      price: 250,
-      category: 'Live Counters',
-      availability: true,
-      dietaryTag: 'VEG',
-      imageUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80',
-    },
+    // Chicken Starters (14)
+    { name: 'Chicken 65', description: 'The iconic spicy deep-fried chicken with red chilli marinade.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Chicken Boneless', description: 'Tender boneless chicken pieces marinated and fried to golden perfection.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Chettinad Chicken', description: 'Fiery Chettinad-style chicken with freshly ground spice paste.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Dragon Chicken', description: 'Crispy chicken tossed in a sweet and spicy dragon sauce.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Chicken Pakoda', description: 'Crispy gram flour-battered chicken fritters with spicy masala.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Garlic Chicken', description: 'Chicken pieces infused with roasted garlic and bold spices.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Golden Chicken', description: 'Golden-fried crispy chicken with a crunchy outer layer.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Pepper Chicken 65', description: 'Spicy pepper-infused Chicken 65 with a bold black pepper kick.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Grill Chicken', description: 'Charcoal-grilled whole chicken pieces with smoky tandoori marinade.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Chicken Manchurian', description: 'Indo-Chinese style chicken balls in a tangy manchurian sauce.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Chicken Tikka', description: 'Succulent chicken chunks marinated in yogurt and spices, grilled in clay oven.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Chicken Lollipop', description: 'Crispy drumette chicken wings tossed in spicy Schezwan sauce.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Chicken Semi Gravy', description: 'Tender chicken pieces in a thick, luscious masala gravy.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Chicken Chukka', description: 'Dry, spicy chicken masala with roasted onions and curry leaves.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Chicken Chaaps (Coconut Mixing)', description: 'Chicken chaaps tossed with freshly grated coconut and mild spices.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+
+    // Nattu Kozhi Starters (12)
+    { name: 'Nattu Kozhi 65', description: 'Country chicken deep-fried with traditional red chilli marinade.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Nattu Kozhi Dry Masala', description: 'Country chicken cooked dry with hand-pounded masala paste.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Nattu Kozhi Golden Fry', description: 'Golden-fried country chicken with crispy turmeric coating.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Nattu Kozhi Pepper 65', description: 'Pepper-spiked country chicken 65 with bold black pepper flavor.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Nattu Kozhi Green', description: 'Country chicken with green chilli and coriander-based green masala.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Nattu Kozhi Manchurian', description: 'Country chicken in Indo-Chinese manchurian sauce — a fusion delicacy.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Nattu Kozhi Tikka', description: 'Country chicken tikka marinated in spices and grilled on charcoal.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Nattu Kozhi Semi Gravy', description: 'Country chicken in a thick, rich semi-gravy masala.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Nattu Kozhi Chukka', description: 'Dry country chicken masala with roasted coconut and curry leaves.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Nattu Kozhi Grill Full', description: 'Whole country chicken grilled with tandoori marinade over charcoal.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Nattu Kozhi Chaaps', description: 'Country chicken chaaps grilled with bold spices and aromatic herbs.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Pepper Chicken', description: 'Succulent chicken pieces tossed with freshly cracked black pepper.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+
+    // Kaadai (Quail) Starters (8)
+    { name: 'Golden Kaadai', description: 'Golden-fried quail with crispy turmeric and spice coating.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Pepper 65 Kaadai', description: 'Pepper-spiked quail 65 with bold and spicy flavor.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Pepper Kaadai', description: 'Quail cooked with freshly ground pepper and south Indian spices.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Grill Kaadai', description: 'Charcoal-grilled quail with smoky tandoori marinade.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Kaadai Manchurian', description: 'Quail pieces in Indo-Chinese manchurian sauce — a unique fusion.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Kaadai Semi Gravy', description: 'Quail in a thick, luscious semi-gravy masala.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Kaadai Chukka', description: 'Dry quail masala with roasted spices and curry leaves.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+    { name: 'Kaadai Chaaps', description: 'Grilled quail chaaps with bold spices and aromatic herbs.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
+
+    // Additional Starters (1)
+    { name: 'Pepper Chicken 65', description: 'Bold pepper-infused chicken 65 with a fiery kick.', category: 'Starters', availability: true, dietaryTag: 'NON_VEG', imageUrl: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=500&q=80' },
   ];
 
   for (const item of menuItems) {

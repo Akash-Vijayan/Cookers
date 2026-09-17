@@ -36,6 +36,17 @@ yarn-error.log*
 # vercel
 .vercel
 
+# database
+prisma/*.db
+prisma/*.db-journal
+
+# local nested / static artifacts
+Cookers/
+static-site/
+*_PLAN.md
+DESIGN_IMPROVEMENT_PLAN.md
+MENU_UPDATE_PLAN.md
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

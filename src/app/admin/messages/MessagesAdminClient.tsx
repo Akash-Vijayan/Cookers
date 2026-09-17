@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, Check, Trash, Clock, AlertCircle, RefreshCw, Send } from 'lucide-react';
+import { Mail, Check, Trash, AlertCircle, RefreshCw, Send } from 'lucide-react';
 
 interface ContactMessage {
   id: string;
@@ -34,7 +34,7 @@ export default function MessagesAdminClient({ initialMessages }: MessagesAdminCl
 
   const getStatusStyle = (status: string) => {
     if (status.toUpperCase() === 'RESOLVED') {
-      return 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20';
+      return 'bg-primary/10 text-primary border border-primary/20';
     }
     return 'bg-amber-500/10 text-amber-500 border border-amber-500/20';
   };
@@ -61,7 +61,7 @@ export default function MessagesAdminClient({ initialMessages }: MessagesAdminCl
         const data = await res.json();
         setActionError(data.error || 'Failed to update message status.');
       }
-    } catch (err) {
+    } catch {
       setActionError('An error occurred.');
     } finally {
       setLoadingId(null);
@@ -88,7 +88,7 @@ export default function MessagesAdminClient({ initialMessages }: MessagesAdminCl
         const data = await res.json();
         setActionError(data.error || 'Failed to delete message.');
       }
-    } catch (err) {
+    } catch {
       setActionError('An error occurred.');
     } finally {
       setLoadingId(null);
@@ -96,18 +96,20 @@ export default function MessagesAdminClient({ initialMessages }: MessagesAdminCl
   };
 
   return (
-    <div className="space-y-8 text-charcoal dark:text-cream">
+    <div className="space-y-8 text-foreground">
       
       {/* Title */}
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight text-foreground">Customer Inquiries</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
+          Customer <span className="font-serif italic text-brass">Inquiries</span>
+        </h1>
         <p className="text-sm text-foreground/60 mt-1">
           Read customer inquiries, mark queries as resolved, and reply directly.
         </p>
       </div>
 
       {actionError && (
-        <div className="flex items-center space-x-2 bg-red-500/10 text-red-500 p-4 rounded-xl text-xs border border-red-500/20">
+        <div className="flex items-center space-x-2 bg-carmine/15 text-carmine p-4 rounded-xl text-xs border border-carmine/30">
           <AlertCircle className="h-4.5 w-4.5 shrink-0" />
           <span>{actionError}</span>
         </div>
@@ -124,7 +126,7 @@ export default function MessagesAdminClient({ initialMessages }: MessagesAdminCl
                 onClick={() => setStatusFilter(opt)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   statusFilter === opt
-                    ? 'bg-primary text-white shadow-sm'
+                    ? 'bg-carmine text-bone shadow-sm'
                     : 'hover:bg-foreground/5 text-foreground/75'
                 }`}
               >
@@ -213,7 +215,7 @@ export default function MessagesAdminClient({ initialMessages }: MessagesAdminCl
                       <button
                         onClick={() => handleUpdateStatus(selectedMessage.id, 'RESOLVED')}
                         disabled={loadingId === selectedMessage.id}
-                        className="flex items-center space-x-1 px-3 py-2 bg-emerald-500 text-white font-bold rounded-xl hover:bg-emerald-600 transition"
+                        className="flex items-center space-x-1 px-3 py-2 bg-primary text-white font-bold rounded-xl hover:bg-primary-hover transition"
                       >
                         <Check className="h-3.5 w-3.5" />
                         <span>Resolve</span>
@@ -231,7 +233,7 @@ export default function MessagesAdminClient({ initialMessages }: MessagesAdminCl
                     
                     {/* Native mailto reply link */}
                     <a
-                      href={`mailto:${selectedMessage.email}?subject=Re: Cookers Inquiry`}
+                      href={`mailto:${selectedMessage.email}?subject=Re: DD Cookers Inquiry`}
                       className="flex items-center space-x-1 px-3 py-2 bg-primary text-white font-bold rounded-xl hover:bg-primary-hover transition"
                     >
                       <Send className="h-3.5 w-3.5" />

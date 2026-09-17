@@ -1,7 +1,17 @@
-import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
-import { Check, Calendar, Users, Award, ShieldCheck, HelpCircle } from 'lucide-react';
+import { Check, Users } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: "Catering Packages & Per-Plate Pricing | DD Cookers Tirunelveli",
+  description: "Browse DD Cookers Silver, Gold, and Platinum catering packages. All-inclusive per-plate pricing for weddings, house warmings, and corporate feasts.",
+  alternates: {
+    canonical: "https://ddcookers.com/packages",
+  },
+};
+
+export const instant = false;
 
 async function getPackages() {
   try {
@@ -13,8 +23,6 @@ async function getPackages() {
     return [];
   }
 }
-
-export const revalidate = 600; // Cache plans for 10 minutes
 
 export default async function PackagesPage() {
   const packagesList = await getPackages();
@@ -55,26 +63,35 @@ export default async function PackagesPage() {
   const plans = packagesList.length > 0 ? packagesList : defaultPackages;
 
   return (
-    <div className="bg-cream dark:bg-charcoal min-h-screen pb-16">
+    <div className="bg-background min-h-screen text-foreground pb-16">
       
       {/* Page Header */}
-      <section className="relative py-20 bg-charcoal text-white text-center mb-16 overflow-hidden">
+      <section className="relative pt-36 pb-16 lg:pt-48 lg:pb-24 bg-card/45 border-b border-border/45 backdrop-blur-sm text-center mb-16 overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-10"
           style={{
             backgroundImage: `url('https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1920&q=80')`,
           }}
         />
-        <div className="relative z-10 max-w-4xl mx-auto px-4 space-y-4">
-          <span className="text-primary text-xs uppercase font-extrabold tracking-widest bg-white/10 px-3 py-1 rounded-full">
-            Pricing Plans
-          </span>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-none">
-            Catering Packages
-          </h1>
-          <p className="text-stone-300 text-base md:text-lg max-w-xl mx-auto">
-            Choose a plan that fits your guest capacity and menu preferences, or request a custom event quote.
-          </p>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          {/* Breadcrumb */}
+          <div className="flex items-center space-x-2 text-[10px] uppercase tracking-widest font-extrabold text-foreground/50 mb-6 text-left">
+            <Link href="/" className="hover:text-brass transition">Home</Link>
+            <span className="text-brass/30">&bull;</span>
+            <span className="text-brass">Packages</span>
+          </div>
+
+          <div className="text-center space-y-4 flex flex-col items-center">
+            <span className="text-brass text-xs uppercase font-extrabold tracking-widest bg-brass/10 border border-brass/20 px-3 py-1 rounded-full">
+              Pricing Plans
+            </span>
+            <h1 className="text-4xl md:text-6xl font-black tracking-tight text-foreground leading-none">
+              Catering <span className="font-serif italic text-brass">Packages</span>
+            </h1>
+            <p className="text-foreground/80 text-base md:text-lg max-w-xl mx-auto">
+              Choose a plan that fits your guest capacity and menu preferences, or request a custom event quote.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -87,13 +104,13 @@ export default async function PackagesPage() {
               key={pkg.id}
               className={`bg-card border rounded-3xl p-8 flex flex-col justify-between relative transition-all duration-300 ${
                 pkg.isFeatured
-                  ? 'border-primary ring-2 ring-primary/20 scale-[1.03] shadow-xl z-10'
-                  : 'border-border shadow-sm hover:shadow-md'
+                  ? 'border-carmine ring-2 ring-carmine/25 scale-[1.03] shadow-xl z-10'
+                  : 'border-border shadow-sm hover:shadow-md hover:border-brass/40'
               }`}
             >
               {/* Featured Ribbon */}
               {pkg.isFeatured && (
-                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-black uppercase tracking-wider px-4 py-1.5 rounded-full shadow-md">
+                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-carmine text-bone text-xs font-black uppercase tracking-wider px-4 py-1.5 rounded-full shadow-md">
                   Most Popular
                 </span>
               )}
@@ -106,8 +123,8 @@ export default async function PackagesPage() {
 
                 <div className="border-t border-b border-border py-6">
                   <span className="text-stone-400 text-xs font-bold uppercase block mb-1">Price per guest</span>
-                  <p className="text-4xl md:text-5xl font-black text-primary">
-                    ${pkg.price}
+                  <p className="text-4xl md:text-5xl font-black text-brass">
+                    ₹{pkg.price}
                     <span className="text-sm font-normal text-foreground/60"> / plate</span>
                   </p>
                   <p className="text-xs text-foreground/50 mt-1 flex items-center space-x-1">
@@ -122,7 +139,7 @@ export default async function PackagesPage() {
                   <ul className="space-y-2.5 text-sm">
                     {pkg.menuHighlights.split(',').map((highlight) => (
                       <li key={highlight} className="flex items-start space-x-2.5">
-                        <Check className="h-4.5 w-4.5 text-primary shrink-0 mt-0.5" />
+                        <Check className="h-4.5 w-4.5 text-brass shrink-0 mt-0.5" />
                         <span>{highlight.trim()}</span>
                       </li>
                     ))}
@@ -135,7 +152,7 @@ export default async function PackagesPage() {
                   <ul className="space-y-2.5 text-sm">
                     {pkg.servicesIncluded.split(',').map((svc) => (
                       <li key={svc} className="flex items-start space-x-2.5">
-                        <Check className="h-4.5 w-4.5 text-secondary shrink-0 mt-0.5" />
+                        <Check className="h-4.5 w-4.5 text-carmine shrink-0 mt-0.5" />
                         <span className="text-foreground/85">{svc.trim()}</span>
                       </li>
                     ))}
@@ -148,8 +165,8 @@ export default async function PackagesPage() {
                   href={`/booking?packageId=${pkg.id}`}
                   className={`block text-center py-3.5 rounded-xl font-bold text-sm shadow-md transition-all duration-300 ${
                     pkg.isFeatured
-                      ? 'bg-gradient-to-r from-primary to-secondary hover:from-primary-hover hover:to-secondary-hover text-white hover:scale-[1.02] active:scale-[0.98]'
-                      : 'bg-foreground/5 border border-border hover:bg-foreground/10 text-foreground hover:scale-[1.01]'
+                      ? 'bg-gradient-to-r from-[#B32E33] to-[#6E151A] hover:brightness-105 text-bone hover:scale-[1.02] active:scale-[0.98]'
+                      : 'bg-card border border-border hover:bg-foreground/5 text-foreground hover:scale-[1.01]'
                   }`}
                 >
                   Book {pkg.name}
@@ -160,19 +177,19 @@ export default async function PackagesPage() {
         </div>
 
         {/* Custom Package CTA */}
-        <div className="bg-gradient-to-r from-charcoal to-stone-900 text-white rounded-3xl p-8 md:p-12 text-center shadow-lg relative overflow-hidden">
+        <div className="bg-card border border-border text-foreground rounded-3xl p-8 md:p-12 text-center shadow-lg relative overflow-hidden">
           <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-            <span className="bg-white/10 text-stone-200 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            <span className="bg-carmine/10 text-carmine border border-carmine/20 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
               Need Something Unique?
             </span>
-            <h3 className="text-3xl font-extrabold tracking-tight">Custom Event Packages</h3>
-            <p className="text-stone-300 text-sm md:text-base leading-relaxed">
-              We cater events of all shapes and sizes. If our standard packages don't match your menu ideas, guest count, or budget, our master chefs can draft custom recipes and custom pricing just for you.
+            <h3 className="text-3xl font-extrabold tracking-tight text-foreground">Custom Event Packages</h3>
+            <p className="text-foreground/75 text-sm md:text-base leading-relaxed">
+              We cater events of all shapes and sizes. If our standard packages don&apos;t match your menu ideas, guest count, or budget, our master chefs can draft custom recipes and custom pricing just for you.
             </p>
             <div className="pt-4">
               <Link
                 href="/booking"
-                className="inline-flex items-center space-x-2 px-6 py-3 bg-secondary hover:bg-secondary-hover text-white font-bold rounded-xl shadow-md transition-all"
+                className="inline-flex items-center space-x-2 px-6 py-3 bg-carmine hover:bg-carmine/90 text-bone font-bold rounded-xl shadow-md transition-all"
               >
                 <span>Draft Custom Plan</span>
               </Link>

@@ -42,7 +42,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    refreshUser();
+    (async () => {
+      try {
+        const res = await fetch('/api/auth/me');
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
+      } catch {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -58,7 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { success: true };
       }
       return { success: false, error: data.error || 'Login failed' };
-    } catch (error) {
+    } catch {
       return { success: false, error: 'An unexpected error occurred' };
     }
   };
@@ -75,7 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { success: true };
       }
       return { success: false, error: data.error || 'Registration failed' };
-    } catch (error) {
+    } catch {
       return { success: false, error: 'An unexpected error occurred' };
     }
   };

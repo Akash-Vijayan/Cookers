@@ -1,37 +1,94 @@
 @import "tailwindcss";
 
+@custom-variant light (&:where(.light, .light *));
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #fafaf9; /* Warm Cream */
-  --foreground: #1c1917; /* Charcoal */
-  --card: #ffffff;
-  --card-foreground: #1c1917;
-  --border: #e7e5e4;
-  --ring: #e11d48;
+  /* Default Light Luxury Theme — Clean Ivory, Pure White Cards, Rich Crimson & Gold */
+  --cacao: #1A1412;
+  --bordeaux: #8A151C;
+  --carmine: #A61C24;
+  --brass: #B58446;
+  --bone: #FAF8F5;
+
+  --background: #FAF8F5;
+  --background-solid: #FAF8F5;
+  --foreground: #1A1412;
+  --card: #FFFFFF;
+  --card-foreground: #1A1412;
+  --border: #E8E0D5;
+  --ring: #A61C24;
+  --primary-color: #A61C24;
+  --primary-hover-color: #8A151C;
+  --accent-brass: #B58446;
+  --muted-foreground: #5C504A;
+  --input-bg: #FAF8F5;
+  --hero-scrim-start: rgba(26, 20, 18, 0.85);
+  --hero-scrim-mid: rgba(138, 21, 28, 0.65);
+  --hero-scrim-end: rgba(26, 20, 18, 0.90);
+  --hero-heading: #FFFFFF;
+  --hero-body: #F0E6CB;
+  --hero-btn-secondary-border: #B58446;
+  --hero-btn-secondary-text: #FFFFFF;
+  --stats-bg: #F5EFE6;
+  --stats-label: rgba(26, 20, 18, 0.7);
+  --font-serif: Fraunces, Georgia, serif;
+  --font-sans: Geist, system-ui, sans-serif;
 }
 
-.dark {
-  --background: #1c1917; /* Charcoal */
-  --foreground: #fafaf9; /* Cream */
-  --card: #292524; /* Warm Dark Card */
-  --card-foreground: #fafaf9;
-  --border: #44403c;
-  --ring: #ea580c;
+html.dark {
+  /* Optional Dark Theme Variables */
+  --background: radial-gradient(circle at 50% 0%, #6E151A 0%, #240808 55%, #140404 100%) no-repeat fixed;
+  --background-solid: #240808;
+  --foreground: #F0E6CB;
+  --card: #2D0B0D;
+  --card-foreground: #F0E6CB;
+  --border: #4D1216;
+  --ring: #B32E33;
+  --primary-color: #B32E33;
+  --primary-hover-color: #942327;
+  --accent-brass: #CD9F65;
+  --muted-foreground: #D6C7B2;
+  --input-bg: #1B0606;
+  --stats-bg: #1E0607;
+  --stats-label: rgba(240, 230, 203, 0.65);
 }
 
 @theme {
-  --color-primary: #e11d48; /* Crimson */
-  --color-primary-hover: #be123c;
-  --color-secondary: #ea580c; /* Orange */
-  --color-secondary-hover: #c2410c;
-  --color-cream: #fafaf9;
-  --color-charcoal: #1c1917;
+  --color-cacao: #1A1412;
+  --color-bordeaux: #8A151C;
+  --color-carmine: #A61C24;
+  --color-brass: var(--accent-brass);
+  --color-bone: #FAF8F5;
+
+  --color-primary: var(--primary-color);
+  --color-primary-hover: var(--primary-hover-color);
+  --color-secondary: var(--primary-color);
+  --color-secondary-hover: var(--primary-hover-color);
+  --color-accent-brass: var(--accent-brass);
+  --color-cream: #FAF8F5;
+  --color-charcoal: #1A1412;
+  
+  --color-background: var(--background-solid);
+  --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+  --color-input-bg: var(--input-bg);
   --color-border: var(--border);
   --color-ring: var(--ring);
 
-  --animate-fade-in: fade-in 0.5s ease-out;
-  --animate-slide-up: slide-up 0.5s ease-out;
+  --color-stone-300: var(--muted-foreground);
+  --color-stone-600: var(--muted-foreground);
+  --color-hero-heading: var(--hero-heading);
+  --color-hero-body: var(--hero-body);
+  --color-hero-btn-secondary-border: var(--hero-btn-secondary-border);
+  --color-hero-btn-secondary-text: var(--hero-btn-secondary-text);
+  --color-stats-bg: var(--stats-bg);
+  --color-stats-label: var(--stats-label);
+
+  --animate-fade-in: fade-in 0.4s ease-out;
+  --animate-slide-up: slide-up 0.4s ease-out;
+  --animate-slide-left: slide-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes fade-in {
@@ -40,30 +97,54 @@
 }
 
 @keyframes slide-up {
-  from { transform: translateY(20px); opacity: 0; }
+  from { transform: translateY(15px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
+@keyframes slide-left {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+}
+
+.font-serif {
+  font-family: var(--font-serif), Georgia, serif;
+}
+
 body {
-  background-color: var(--background);
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+  position: relative;
 }
 
-/* Glassmorphism utility */
-.glass {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.125);
+body, header, footer, nav, button, a, input, select, textarea, .card, [role="button"] {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.dark .glass {
-  background: rgba(28, 25, 23, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+p {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.015;
+  pointer-events: none;
+  z-index: 9999;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 /* Custom Scrollbar */
@@ -72,15 +153,25 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: #FAF8F5;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d6d3d1;
+  background: #C8BEB2;
   border-radius: 4px;
 }
-.dark ::-webkit-scrollbar-thumb {
-  background: #57534e;
-}
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--ring);
+  background: #A61C24;
+}
+
+/* Custom Date Picker Styling */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 100%;
+  z-index: 10;
 }

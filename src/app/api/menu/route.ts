@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { cookies } from 'next/headers';
 import { verifyJWT } from '@/lib/jwt';
+import { revalidateTag } from 'next/cache';
 
 async function isAdmin() {
   const cookieStore = await cookies();
@@ -38,6 +39,8 @@ export async function POST(req: Request) {
         availability: availability !== undefined ? availability : true,
       },
     });
+
+    revalidateTag('menu-items', 'max');
 
     return NextResponse.json({
       success: true,

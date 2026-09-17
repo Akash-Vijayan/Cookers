@@ -1,309 +1,542 @@
 import React from 'react';
 import Link from 'next/link';
-import { prisma } from '@/lib/db';
-import { Utensils, ChefHat, ShieldCheck, HeartHandshake, Star, ArrowRight, Sparkles, Award } from 'lucide-react';
-
-// Dynamic client slider for testimonials
-import TestimonialSlider from '@/components/TestimonialSlider';
-// Animated stats section
+import Image from 'next/image';
+import type { Metadata } from 'next';
+import { 
+  ChevronRight, 
+  Check, 
+  MapPin, 
+  ChefHat, 
+  Flame,
+  UtensilsCrossed
+} from 'lucide-react';
+import HeroQuoteForm from '@/components/HeroQuoteForm';
+import TestimonialCarousel from '@/components/TestimonialCarousel';
+import GalleryLightbox from '@/components/GalleryLightbox';
+import SignatureMenuTeaser from '@/components/SignatureMenuTeaser';
 import StatsSection from '@/components/StatsSection';
 
-async function getHomeData() {
-  try {
-    const services = await prisma.service.findMany({ take: 4 });
-    const featuredPackages = await prisma.package.findMany({
-      where: { isFeatured: true },
-      take: 2,
-    });
-    const testimonials = await prisma.testimonial.findMany({
-      where: { isApproved: true },
-      take: 5,
-    });
+export const metadata: Metadata = {
+  title: "DD Cookers | Best Catering Service & Wedding Caterer in Tirunelveli",
+  description: "DD Cookers provides premium traditional catering services in Tirunelveli since 2008. Specializing in weddings, corporate galas, house warmings, and grand banquets.",
+  alternates: {
+    canonical: "https://ddcookers.com/",
+  },
+  openGraph: {
+    title: "DD Cookers | Best Catering Service & Wedding Caterer in Tirunelveli",
+    description: "Premium food, authentic spice blends, and 50+ professional servers since 2008.",
+    url: "https://ddcookers.com/",
+    siteName: "DD Cookers",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1200&q=80",
+        width: 1200,
+        height: 630,
+        alt: "DD Cookers Banquet Feast",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+};
 
-    return { services, featuredPackages, testimonials };
-  } catch (error) {
-    console.error('Home Page Data fetch error:', error);
-    return { services: [], featuredPackages: [], testimonials: [] };
-  }
-}
+export default function HomePage() {
+  const testimonials = [
+    {
+      name: "Senthil Nathan",
+      rating: 5,
+      text: "The catering for our wedding was spectacular! All our guests loved the traditional taste, especially the live dessert stations. Highly recommended!",
+      date: "August 2026"
+    },
+    {
+      name: "Priya Rajan",
+      rating: 5,
+      text: "Professional corporate event setup. Punctual service, hygienic containers, and excellent menu customisation options. Will hire again.",
+      date: "July 2026"
+    },
+    {
+      name: "Murugan Subramanian",
+      rating: 5,
+      text: "We ordered the House Warming buffet package. Superb flavor, generous portions, and clean setup. Outstanding hospitality!",
+      date: "June 2026"
+    },
+    {
+      name: "Kavitha Ramesh",
+      rating: 4,
+      text: "Skilled cooking crew and amazing setup. The chat and live counters kept the kids entertained. Value for money is top-tier.",
+      date: "May 2026"
+    },
+    {
+      name: "Arun Kumar",
+      rating: 5,
+      text: "Masterful flavors and beautiful presentation. Their team took care of everything from banquet setups to waste management. 10/10 service.",
+      date: "April 2026"
+    }
+  ];
 
-export const revalidate = 60; // Revalidate every minute
-
-export default async function HomePage() {
-  const { services, featuredPackages, testimonials } = await getHomeData();
+  const galleryImages = [
+    {
+      url: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80",
+      caption: "Elegant Ballroom Buffet Presentation"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80",
+      caption: "Live Grill & Outdoor Buffet Stations"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=800&q=80",
+      caption: "Handcrafted Artisan Dessert Counters"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=800&q=80",
+      caption: "Authentic South Indian Traditional Rice Spread"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1578849278619-e73505e9610f?auto=format&fit=crop&w=800&q=80",
+      caption: "Grand Wedding Hall Dining Arrangement"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1534080564583-6be75777b70a?auto=format&fit=crop&w=800&q=80",
+      caption: "Fresh Seafood & Live Cooking Display"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80",
+      caption: "Royal Biryani & Spicy Curry Gravies"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=800&q=80",
+      caption: "Crispy Appetizer & Snack Counter Setup"
+    }
+  ];
 
   return (
-    <div className="flex flex-col min-h-screen">
-      
-      {/* 1. Hero Section */}
-      <section className="relative h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden">
-        {/* Hero Background Photo with Warm Overlay */}
-        <div
-          className="absolute inset-0 bg-cover bg-center transition-all duration-700 hover:scale-105"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1920&q=80')`,
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-charcoal/50 to-charcoal/30 dark:from-charcoal dark:via-charcoal/70" />
+    <div className="flex flex-col min-h-screen bg-background text-foreground transition-colors duration-300">
 
-        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center text-white space-y-6">
-          <div className="inline-flex items-center space-x-2 bg-primary/20 backdrop-blur-md border border-primary/30 px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide text-white uppercase animate-fade-in">
-            <Sparkles className="h-4 w-4 text-secondary shrink-0" />
-            <span>Gourmet Catering & Events</span>
-          </div>
+      {/* 1. HERO BANNER WITH KANNIYAKUMARI COASTAL SUNRISE THEME */}
+      <section className="relative min-h-[92vh] flex items-end justify-center pt-28 pb-6 lg:pt-36 lg:pb-0 border-b border-border/60 overflow-hidden bg-transparent">
+        
+        {/* Kanniyakumari Coastal Sunrise Background Image Layer */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <Image
+            src="/images/hero-bg.png"
+            alt="Kanniyakumari Coastal Background - DD Cookers"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center sm:object-bottom filter contrast-[1.02]"
+          />
+          {/* Subtle soft gradient to seamlessly blend into light theme */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#FAF8F5]/20 via-transparent to-[#FAF8F5]/30 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#FAF8F5] via-[#FAF8F5]/50 to-transparent pointer-events-none" />
+        </div>
 
-          <h1 className="text-4xl md:text-7xl font-black tracking-tight leading-none text-white drop-shadow-md">
-            Crafting <span className="bg-gradient-to-r from-primary via-orange-400 to-secondary bg-clip-text text-transparent">Memorable Feasts</span> for Your Special Moments
-          </h1>
-          
-          <p className="text-stone-200 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed drop-shadow-sm font-medium">
-            Experience premium live cooking counters, exquisite buffet presentation, and custom event menus designed by master chefs.
-          </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+            
+            {/* Left Column: Founder Photo (Prominent & Grounded at Shoreline) */}
+            <div className="lg:col-span-5 flex flex-col items-center lg:items-start justify-end relative order-2 lg:order-1 self-end">
+              
+              <div className="relative w-full max-w-[440px] sm:max-w-[500px] lg:max-w-[540px] flex items-end justify-center lg:justify-start">
+                {/* Founder image grounded at bottom with gentle feather mask */}
+                <Image
+                  src="/images/founder.png"
+                  alt="Managing Director & Founder - DD Cookers"
+                  width={560}
+                  height={720}
+                  priority
+                  className="w-full h-auto object-contain filter brightness-[1.02] contrast-[1.04] scale-[1.06] origin-bottom [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)]"
+                />
+              </div>
 
-          <div className="pt-6 flex flex-col sm:flex-row justify-center items-center gap-4">
-            <Link
-              href="/booking"
-              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-primary to-secondary hover:from-primary-hover hover:to-secondary-hover text-white font-extrabold rounded-2xl shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center space-x-2 text-base"
-            >
-              <span>Book Our Services</span>
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-            <Link
-              href="/packages"
-              className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-extrabold rounded-2xl border border-white/20 hover:border-white/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center text-base backdrop-blur-sm"
-            >
-              View Menu Packages
-            </Link>
+            </div>
+
+            {/* Right Column: Eyebrow, Headline, Paragraph, Glassmorphism Estimate Form */}
+            <div className="lg:col-span-7 space-y-5 text-center lg:text-left order-1 lg:order-2 pb-6 lg:pb-10 self-center lg:self-end">
+              
+              <div className="max-w-xl mx-auto lg:mx-0 space-y-3">
+                {/* Pill-shaped Eyebrow Badge */}
+                <div className="inline-flex items-center space-x-2 px-3.5 py-1 border border-brass/35 bg-brass/10 backdrop-blur-md rounded-full shadow-sm">
+                  <span className="h-2 w-2 rounded-full bg-brass animate-pulse" />
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-brass">
+                    Premier Caterer in Tirunelveli Since 2008
+                  </span>
+                </div>
+
+                {/* Bold Serif Headline */}
+                <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-normal tracking-tight text-foreground font-serif leading-[1.2]">
+                  Serving <span className="italic font-normal text-brass underline decoration-brass/30 underline-offset-8">Smiles</span> & Unforgettable Feasts For Your Special Days.
+                </h1>
+
+                {/* Supporting Paragraph */}
+                <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed">
+                  Bringing authentic South Indian flavors, joyful hospitality, and traditional warmth to your weddings, corporate galas, and family celebrations across Tirunelveli.
+                </p>
+              </div>
+
+              {/* Glassmorphism Lead-Gen Form ("Bespoke Catering Estimate") */}
+              <div className="max-w-xl mx-auto lg:mx-0">
+                <HeroQuoteForm />
+              </div>
+
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* 2. Animated Counter Stats */}
+      {/* 2. TRUST STRIP BELOW THE FOLD WITH ANIMATED COUNTER */}
       <StatsSection />
 
-      {/* 3. Featured Services */}
+      {/* 3. GREETING CITATION */}
+      <section className="py-16 text-center bg-transparent relative">
+        <div className="max-w-4xl mx-auto px-4">
+          <span className="text-brass text-[10px] font-extrabold tracking-widest uppercase block mb-3">Our Core Promise</span>
+          <p className="text-2xl md:text-4xl font-light text-foreground/90 font-serif italic tracking-wide">
+            &quot;சுவையும் தரமும் எங்கள் அடையாளம்!&quot;
+          </p>
+          <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-brass to-transparent mx-auto mt-6" />
+        </div>
+      </section>
+
+      {/* 4. INTERACTIVE SIGNATURE FEAST & MENU TEASER (NEW!) */}
+      <section className="py-20 bg-background/50 border-y border-border/40 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+            <span className="text-brass text-xs uppercase font-extrabold tracking-widest block bg-brass/10 border border-brass/25 px-4 py-1.5 rounded-full w-fit mx-auto">
+              Curated Menu Packages
+            </span>
+            <h2 className="text-3xl md:text-5xl font-bold text-foreground font-serif">
+              Explore Our <span className="italic text-brass font-normal">Signature Feasts</span>
+            </h2>
+            <p className="text-foreground/75 text-xs sm:text-sm leading-relaxed max-w-xl mx-auto font-light">
+              From authentic wedding banana leaf dining to high-end corporate buffets, explore curated menus tailored to perfection.
+            </p>
+          </div>
+
+          {/* Interactive Menu Showcase Component */}
+          <SignatureMenuTeaser />
+        </div>
+      </section>
+
+      {/* 5. SERVICES OVERVIEW */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <span className="text-primary text-xs uppercase font-extrabold tracking-wider block">Our Specialties</span>
-          <h2 className="text-3xl md:text-5xl font-black tracking-tight">Catering For Every Occasion</h2>
-          <p className="text-foreground/70 text-base leading-relaxed">
-            From luxury wedding dinners to interactive live food stalls at birthday parties, we curate themes and layouts that impress.
+          <span className="text-carmine text-xs uppercase font-extrabold tracking-widest block bg-carmine/10 border border-carmine/20 px-4 py-1.5 rounded-full w-fit mx-auto">
+            Our Specialties
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold text-foreground pt-2">
+            Specialized <span className="font-serif italic text-brass">Catering</span> Solutions
+          </h2>
+          <p className="text-foreground/75 text-sm leading-relaxed max-w-lg mx-auto">
+            Choose the perfect service style for your upcoming celebration. We maintain rigorous standards for every plate size.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((svc) => (
-            <div
-              key={svc.id}
-              className="group bg-card border border-border rounded-3xl overflow-hidden hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col"
-            >
-              <div className="relative h-52 w-full overflow-hidden">
-                <img
-                  src={svc.imageUrl}
-                  alt={svc.name}
-                  className="object-cover w-full h-full group-hover:scale-115 transition-all duration-500"
-                />
-                <span className="absolute top-4 right-4 bg-charcoal/70 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                  {svc.category}
-                </span>
-              </div>
-              <div className="p-6 flex-grow flex flex-col justify-between">
-                <div>
-                  <h3 className="font-extrabold text-lg group-hover:text-primary transition-colors">
-                    {svc.name}
-                  </h3>
-                  <p className="text-sm text-foreground/70 mt-2 line-clamp-3 leading-relaxed">
-                    {svc.description}
-                  </p>
-                </div>
-                <div className="pt-6 mt-6 border-t border-border flex justify-between items-center">
-                  <span className="text-xs text-foreground/50">Base Price</span>
-                  <span className="text-primary font-black text-lg">${svc.basePrice.toLocaleString()}</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="text-center mt-12">
-          <Link
-            href="/services"
-            className="inline-flex items-center space-x-1 font-bold text-primary hover:text-primary-hover group"
-          >
-            <span>See All Catering Services</span>
-            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
-      </section>
-
-      {/* 4. Why Choose Us (Hygiene & Commitment) */}
-      <section className="py-24 bg-foreground/5 dark:bg-foreground/2">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
-          {/* Visual Showcase */}
-          <div className="relative">
-            <div className="aspect-square bg-gradient-to-tr from-primary/10 to-secondary/10 rounded-3xl overflow-hidden shadow-inner p-4">
-              <img
-                src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80"
-                alt="Master Chef Cooking"
-                className="w-full h-full object-cover rounded-2xl shadow-md hover:scale-[1.02] transition-all duration-500"
-              />
-            </div>
-            {/* Absolute badge */}
-            <div className="absolute -bottom-6 -right-6 bg-card border border-border p-5 rounded-2xl shadow-xl flex items-center space-x-3.5 max-w-[240px]">
-              <div className="bg-emerald-500 p-2.5 rounded-xl text-white">
-                <ShieldCheck className="h-6 w-6" />
+          <Link
+            href="/services/cooking"
+            className="group relative bg-card border border-border p-8 rounded-2xl shadow-md hover:shadow-2xl hover:border-brass/50 transition-all duration-300 flex flex-col justify-between overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-brass/5 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform" />
+            <div className="space-y-4 relative z-10">
+              <div className="w-12 h-12 bg-carmine/10 border border-carmine/20 rounded-xl flex items-center justify-center text-carmine mb-2">
+                <ChefHat className="h-6 w-6" />
               </div>
-              <div>
-                <h4 className="font-extrabold text-sm text-foreground">100% Hygienic</h4>
-                <p className="text-xs text-foreground/60 mt-0.5">ISO 22000 Certified Kitchen Standards</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Text Content */}
-          <div className="space-y-8">
-            <div className="space-y-3">
-              <span className="text-primary text-xs uppercase font-extrabold tracking-wider block">Our Core Pillars</span>
-              <h2 className="text-3xl md:text-5xl font-black tracking-tight leading-tight">Uncompromising Quality in Every Bite</h2>
-              <p className="text-foreground/75 leading-relaxed">
-                At Cookers, catering is not just about delivering food; it is an art of hospitality. We prioritize premium ingredients, impeccable hygiene, and theatrical setups that engage your guests.
+              <span className="text-[10px] font-bold text-brass uppercase tracking-widest block">Service Style 01</span>
+              <h3 className="text-2xl font-bold text-foreground group-hover:text-brass transition">
+                Pure Culinary Cooking
+              </h3>
+              <p className="text-xs text-foreground/70 leading-relaxed">
+                Provide your raw materials and grocery list. Our master chefs prepare authentic, mouth-watering feasts at your location or in our central kitchen.
               </p>
             </div>
-
-            <div className="space-y-6">
-              <div className="flex items-start space-x-4">
-                <div className="bg-primary/10 p-3 rounded-xl text-primary mt-1 shrink-0">
-                  <ChefHat className="h-6 w-6" />
-                </div>
-                <div>
-                  <h3 className="font-extrabold text-lg">Master Chefs Selection</h3>
-                  <p className="text-sm text-foreground/70 mt-1">Our chefs bring over 15 years of culinary expertise in multi-cuisine banquets and authentic local recipes.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="bg-secondary/10 p-3 rounded-xl text-secondary mt-1 shrink-0">
-                  <ShieldCheck className="h-6 w-6" />
-                </div>
-                <div>
-                  <h3 className="font-extrabold text-lg">ISO-Grade Food Safety</h3>
-                  <p className="text-sm text-foreground/70 mt-1">We maintain sanitization guidelines, temperature controls, and raw material validation in our state-of-the-art kitchen.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="bg-primary/10 p-3 rounded-xl text-primary mt-1 shrink-0">
-                  <HeartHandshake className="h-6 w-6" />
-                </div>
-                <div>
-                  <h3 className="font-extrabold text-lg">Customizable Packages</h3>
-                  <p className="text-sm text-foreground/70 mt-1">Tailor guest capacity, include live cotton candy/popcorn counters, or adjust dietary restrictions to match your vision.</p>
-                </div>
-              </div>
+            <div className="pt-6 border-t border-border/40 mt-6 flex items-center text-xs font-bold text-brass group-hover:translate-x-1 transition-transform relative z-10">
+              <span>Explore Cooking Service</span>
+              <ChevronRight className="h-4 w-4 ml-1" />
             </div>
-          </div>
+          </Link>
+
+          <Link
+            href="/services/catering"
+            className="group relative bg-card border border-brass/40 p-8 rounded-2xl shadow-xl hover:shadow-2xl hover:border-brass transition-all duration-300 flex flex-col justify-between overflow-hidden ring-1 ring-brass/10"
+          >
+            <div className="absolute top-3 right-4 bg-brass text-foreground text-[9px] uppercase font-extrabold tracking-widest px-2.5 py-1 rounded-full">
+              Most Popular
+            </div>
+            <div className="space-y-4 relative z-10">
+              <div className="w-12 h-12 bg-brass/15 border border-brass/30 rounded-xl flex items-center justify-center text-brass mb-2">
+                <UtensilsCrossed className="h-6 w-6" />
+              </div>
+              <span className="text-[10px] font-bold text-brass uppercase tracking-widest block">Service Style 02</span>
+              <h3 className="text-2xl font-bold text-foreground group-hover:text-brass transition">
+                Full-Service Catering
+              </h3>
+              <p className="text-xs text-foreground/70 leading-relaxed">
+                End-to-end event dining. Includes food preparation, transport, uniformed servers, luxury buffet counters, banana leaf setups, and waste management.
+              </p>
+            </div>
+            <div className="pt-6 border-t border-border/40 mt-6 flex items-center text-xs font-bold text-brass group-hover:translate-x-1 transition-transform relative z-10">
+              <span>Explore Catering Service</span>
+              <ChevronRight className="h-4 w-4 ml-1" />
+            </div>
+          </Link>
+
+          <Link
+            href="/services/stall"
+            className="group relative bg-card border border-border p-8 rounded-2xl shadow-md hover:shadow-2xl hover:border-brass/50 transition-all duration-300 flex flex-col justify-between overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-brass/5 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform" />
+            <div className="space-y-4 relative z-10">
+              <div className="w-12 h-12 bg-carmine/10 border border-carmine/20 rounded-xl flex items-center justify-center text-carmine mb-2">
+                <Flame className="h-6 w-6" />
+              </div>
+              <span className="text-[10px] font-bold text-brass uppercase tracking-widest block">Service Style 03</span>
+              <h3 className="text-2xl font-bold text-foreground group-hover:text-brass transition">
+                Live Food Stalls
+              </h3>
+              <p className="text-xs text-foreground/70 leading-relaxed">
+                Interactive live cooking stalls and street food counters. Engage guests with hot sizzlers, chaat counters, and custom live preparation stations.
+              </p>
+            </div>
+            <div className="pt-6 border-t border-border/40 mt-6 flex items-center text-xs font-bold text-brass group-hover:translate-x-1 transition-transform relative z-10">
+              <span>Explore Live Stalls</span>
+              <ChevronRight className="h-4 w-4 ml-1" />
+            </div>
+          </Link>
 
         </div>
       </section>
 
-      {/* 5. Featured Package Call-to-Action */}
-      {featuredPackages.length > 0 && (
-        <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="bg-gradient-to-r from-charcoal to-stone-900 text-white rounded-3xl p-8 md:p-12 shadow-xl relative overflow-hidden">
-            <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4">
-              <Award className="w-96 h-96 text-white" />
-            </div>
-            <div className="relative z-10 max-w-3xl space-y-6">
-              <span className="bg-secondary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white">
-                Best Value Package
-              </span>
-              <h3 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-                {featuredPackages[0].name}
-              </h3>
-              <p className="text-stone-300 text-base md:text-lg leading-relaxed">
-                {featuredPackages[0].description} Enjoy menu highlights including {featuredPackages[0].menuHighlights}.
-              </p>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-4">
-                <div>
-                  <p className="text-stone-400 text-xs uppercase font-semibold">Starting Price</p>
-                  <p className="text-3xl md:text-4xl font-black text-secondary">${featuredPackages[0].price} <span className="text-sm font-normal text-stone-400">/ guest</span></p>
-                </div>
-                <Link
-                  href={`/booking?packageId=${featuredPackages[0].id}`}
-                  className="px-6 py-3 bg-primary hover:bg-primary-hover text-white font-extrabold rounded-xl shadow-lg transition-all"
-                >
-                  Book This Package
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* 6. Dynamic Testimonials Section */}
-      <section className="py-24 bg-foreground/5 dark:bg-foreground/2">
+      {/* 6. THE 4-STEP CULINARY EXPERIENCE TIMELINE (NEW!) */}
+      <section className="py-20 bg-background border-y border-border/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-            <span className="text-primary text-xs uppercase font-extrabold tracking-wider block">Reviews</span>
-            <h2 className="text-3xl md:text-5xl font-black tracking-tight">What Our Customers Say</h2>
-            <p className="text-foreground/70 text-base leading-relaxed">
-              We have served thousands of guests across corporate dinners, birthday celebrations, and luxury wedding halls. Read their reviews.
+            <span className="text-brass text-xs uppercase font-extrabold tracking-widest block bg-brass/10 border border-brass/25 px-4 py-1.5 rounded-full w-fit mx-auto">
+              Seamless Event Workflow
+            </span>
+            <h2 className="text-3xl md:text-5xl font-bold text-foreground font-serif">
+              Our 4-Step <span className="italic text-brass font-normal">Culinary Experience</span>
+            </h2>
+            <p className="text-foreground/75 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto font-light">
+              How we transform your event vision into a memorable feast from initial consultation to final table cleanup.
             </p>
           </div>
-          <TestimonialSlider testimonials={testimonials} />
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+            
+            {/* Step 1 */}
+            <div className="bg-card border border-border/70 p-6 rounded-2xl space-y-4 hover:border-brass/40 transition-all duration-300 relative group">
+              <div className="w-10 h-10 bg-brass/15 text-brass font-serif font-bold text-lg rounded-xl flex items-center justify-center border border-brass/30">
+                01
+              </div>
+              <h3 className="font-bold text-lg text-foreground group-hover:text-brass transition">
+                Consultation & Tasting
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                We align on your guest headcount, preferences, and dietary requirements. Enjoy a complimentary menu tasting session.
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="bg-card border border-border/70 p-6 rounded-2xl space-y-4 hover:border-brass/40 transition-all duration-300 relative group">
+              <div className="w-10 h-10 bg-brass/15 text-brass font-serif font-bold text-lg rounded-xl flex items-center justify-center border border-brass/30">
+                02
+              </div>
+              <h3 className="font-bold text-lg text-foreground group-hover:text-brass transition">
+                Ingredients & Sourcing
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                We procure 100% fresh, premium spices, cold-pressed oils, and farm vegetables strictly on event morning for maximum flavor.
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="bg-card border border-border/70 p-6 rounded-2xl space-y-4 hover:border-brass/40 transition-all duration-300 relative group">
+              <div className="w-10 h-10 bg-brass/15 text-brass font-serif font-bold text-lg rounded-xl flex items-center justify-center border border-brass/30">
+                03
+              </div>
+              <h3 className="font-bold text-lg text-foreground group-hover:text-brass transition">
+                Master Chefs & Setup
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Our kitchen crew arrives early at your venue to set up luxury chafing counters, banana leaf dining tables, or live counters.
+              </p>
+            </div>
+
+            {/* Step 4 */}
+            <div className="bg-card border border-border/70 p-6 rounded-2xl space-y-4 hover:border-brass/40 transition-all duration-300 relative group">
+              <div className="w-10 h-10 bg-brass/15 text-brass font-serif font-bold text-lg rounded-xl flex items-center justify-center border border-brass/30">
+                04
+              </div>
+              <h3 className="font-bold text-lg text-foreground group-hover:text-brass transition">
+                Flawless Service & Cleaning
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Our 50+ uniformed staff handle table serving, guest warmth, refills, and complete eco-friendly waste management post-event.
+              </p>
+            </div>
+
+          </div>
         </div>
       </section>
 
-      {/* 7. Gallery Preview Snippet */}
+      {/* 7. ABOUT/CAPABILITY BLOCK */}
+      <section className="py-24 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          
+          <div className="relative p-4">
+            <div className="absolute inset-0 border border-brass/25 rounded-[32px] translate-x-3 translate-y-3 pointer-events-none" />
+            <div className="relative aspect-[4/3] bg-card rounded-3xl overflow-hidden shadow-xl border border-border">
+              <Image
+                src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80"
+                alt="Gourmet Catering Food"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover hover:scale-102 transition duration-500"
+              />
+            </div>
+            <div className="absolute -bottom-4 -left-4 bg-card border border-brass/30 p-4 shadow-xl flex flex-col space-y-1 max-w-[180px] z-10 rounded-2xl">
+              <span className="text-[9px] uppercase tracking-widest text-brass font-bold">ESTABLISHED</span>
+              <span className="font-serif italic text-3xl text-foreground font-bold">2008</span>
+            </div>
+          </div>
+
+          <div className="space-y-8">
+            <span className="text-brass text-[10px] font-extrabold tracking-widest uppercase block border-b border-brass/25 pb-2 w-fit">
+              Our Scale & Capability
+            </span>
+            <h2 className="text-3xl md:text-5xl font-bold text-foreground leading-tight font-serif">
+              Fully Equipped for <span className="italic text-brass">Grand Occasions</span>
+            </h2>
+            <p className="text-foreground/80 leading-relaxed text-sm font-light">
+              Our central kitchen spans over 2000+ sq. ft., optimized for mass cooking with industrial hygiene controls. We have a daily preparation capacity of 5000+ meals, backed by a dedicated team of 50+ professional servers and 8+ master culinary chefs.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-bold text-foreground/85">
+              <div className="flex items-center space-x-2">
+                <div className="bg-carmine/15 p-1.5 rounded-lg text-carmine shrink-0"><Check className="h-4.5 w-4.5" /></div>
+                <span>100% Menu Customization</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="bg-carmine/15 p-1.5 rounded-lg text-carmine shrink-0"><Check className="h-4.5 w-4.5" /></div>
+                <span>Experienced Cooking Crew</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="bg-carmine/15 p-1.5 rounded-lg text-carmine shrink-0"><Check className="h-4.5 w-4.5" /></div>
+                <span>Efficient Delivery & Logistics</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="bg-carmine/15 p-1.5 rounded-lg text-carmine shrink-0"><Check className="h-4.5 w-4.5" /></div>
+                <span>Scalable Event Inclusions</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="bg-carmine/15 p-1.5 rounded-lg text-carmine shrink-0"><Check className="h-4.5 w-4.5" /></div>
+                <span>On-site Buffet Management</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="bg-carmine/15 p-1.5 rounded-lg text-carmine shrink-0"><Check className="h-4.5 w-4.5" /></div>
+                <span>ISO Quality Assurance Certified</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 8. GALLERY PREVIEW */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16">
           <div className="space-y-3">
-            <span className="text-primary text-xs uppercase font-extrabold tracking-wider block">Visuals</span>
-            <h2 className="text-3xl md:text-5xl font-black tracking-tight">Moments From Our Events</h2>
+            <span className="text-brass text-[10px] font-extrabold tracking-widest uppercase block">Visual Portfolio</span>
+            <h2 className="text-3xl md:text-5xl font-bold text-foreground font-serif">Moments from <span className="italic text-brass">Our Feasts</span></h2>
           </div>
           <Link
             href="/gallery"
-            className="flex items-center space-x-1 px-5 py-2.5 rounded-xl border border-border hover:bg-foreground/5 text-sm font-bold transition-all"
+            className="flex items-center space-x-1.5 px-6 py-3.5 border border-brass/40 hover:border-brass hover:bg-brass/10 text-brass text-[10px] uppercase tracking-widest font-bold transition duration-300 rounded-xl"
           >
             <span>View Full Gallery</span>
-            <ArrowRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="h-64 rounded-3xl overflow-hidden shadow-md group relative">
-            <img
-              src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80"
-              alt="Buffet Event"
-              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-              <span className="text-white font-semibold text-sm">Elegant Wedding Buffet Setup</span>
+        {/* Decoupled Interactive Gallery Lightbox */}
+        <GalleryLightbox images={galleryImages} />
+      </section>
+
+      {/* 9. WHY CHOOSE US */}
+      <section className="py-20 bg-background border-t border-border/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+          
+          <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
+            <div className="space-y-3">
+              <span className="text-carmine text-xs uppercase font-extrabold tracking-widest block bg-carmine/10 border border-carmine/20 px-4 py-1.5 rounded-full w-fit mx-auto lg:mx-0">
+                Why Choose Us
+              </span>
+              <h2 className="text-3xl md:text-5xl font-black tracking-tight text-foreground pt-2 font-serif">
+                Signature <span className="italic font-normal text-brass">Standards</span>
+              </h2>
+              <p className="text-foreground/75 text-sm leading-relaxed max-w-xl mx-auto lg:mx-0 font-light">
+                We focus on food quality, infrastructure, and presentation details to elevate your celebrations.
+              </p>
+            </div>
+
+            <div className="space-y-6 text-left max-w-xl mx-auto lg:mx-0">
+              <div className="flex items-start space-x-5">
+                <div className="bg-carmine/15 p-3.5 rounded-2xl text-carmine shrink-0">
+                  <Flame className="h-6 w-6 text-carmine" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-extrabold text-lg text-brass">Authentic Taste</h3>
+                  <p className="text-xs text-foreground/70 leading-relaxed font-light">
+                    Traditional cooking procedures and custom spice blends managed by our seasoned kitchen team to ensure home-cooked authentic flavor.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-5">
+                <div className="bg-carmine/15 p-3.5 rounded-2xl text-carmine shrink-0">
+                  <MapPin className="h-6 w-6 text-carmine" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-extrabold text-lg text-brass">Solid Infrastructure</h3>
+                  <p className="text-xs text-foreground/70 leading-relaxed font-light">
+                    A massive 2000+ sq. ft. central kitchen setup, high-grade transportation fleets, and professional insulation to deliver hot meals.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-5">
+                <div className="bg-carmine/15 p-3.5 rounded-2xl text-carmine shrink-0">
+                  <ChefHat className="h-6 w-6 text-carmine" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-extrabold text-lg text-brass">Skilled Chefs Team</h3>
+                  <p className="text-xs text-foreground/70 leading-relaxed font-light">
+                    Our kitchen board includes experienced chefs specializing in multi-cuisine banquets, traditional gravies, and live snack setups.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="h-64 rounded-3xl overflow-hidden shadow-md group relative">
-            <img
-              src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80"
-              alt="Tandoori BBQ Live"
-              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-              <span className="text-white font-semibold text-sm">Charcoal Live BBQ Station</span>
+
+          <div className="lg:col-span-5 flex justify-center relative p-6">
+            <div className="absolute inset-6 border border-brass/25 rounded-full translate-x-3 translate-y-3 pointer-events-none max-w-sm mx-auto aspect-square" />
+            <div className="relative w-full max-w-sm aspect-square rounded-full overflow-hidden border border-brass/35 ring-8 ring-brass/20 shadow-2xl bg-card flex items-center justify-center">
+              <Image
+                src="https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=800&q=80"
+                alt="Gourmet Curry Platter"
+                fill
+                sizes="(max-width: 1024px) 100vw, 35vw"
+                className="object-cover hover:scale-103 transition-transform duration-700"
+              />
             </div>
           </div>
-          <div className="h-64 rounded-3xl overflow-hidden shadow-md group relative sm:col-span-2 lg:col-span-1">
-            <img
-              src="https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=800&q=80"
-              alt="Dessert Counter"
-              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-              <span className="text-white font-semibold text-sm">Premium Dessert Station</span>
-            </div>
-          </div>
+
         </div>
       </section>
+
+      {/* 10. TESTIMONIALS CAROUSEL */}
+      <TestimonialCarousel testimonials={testimonials} />
 
     </div>
   );
