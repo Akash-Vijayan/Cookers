@@ -52,11 +52,12 @@ export default function CateringServicePage() {
         {/* Featured Image */}
         <div className="relative aspect-video rounded-3xl overflow-hidden shadow-lg border border-border bg-card">
           <Image
-            src="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1200&q=80"
+            src="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1000&q=75"
             alt="Catering buffet tables"
             fill
             sizes="(max-width: 1024px) 100vw, 900px"
             priority
+            quality={80}
             className="object-cover"
           />
         </div>

@@ -52,11 +52,12 @@ export default function StallServicePage() {
         {/* Featured Image */}
         <div className="relative aspect-video rounded-3xl overflow-hidden shadow-lg border border-border bg-card">
           <Image
-            src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=1200&q=80"
+            src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=1000&q=75"
             alt="Live food stalls and counters"
             fill
             sizes="(max-width: 1024px) 100vw, 900px"
             priority
+            quality={80}
             className="object-cover"
           />
         </div>

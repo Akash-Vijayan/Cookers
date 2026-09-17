@@ -45,10 +45,11 @@ export default function ServicesPage() {
       <section className="relative pt-36 pb-16 lg:pt-48 lg:pb-24 bg-card/45 border-b border-border/45 backdrop-blur-sm text-center overflow-hidden">
         <div className="absolute inset-0 opacity-10 pointer-events-none -z-10">
           <Image
-            src="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1920&q=80"
+            src="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1200&q=70"
             alt="Services Banner Background"
             fill
             sizes="100vw"
+            quality={70}
             className="object-cover object-center"
           />
         </div>
@@ -88,6 +89,7 @@ export default function ServicesPage() {
                     alt={svc.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
+                    quality={80}
                     className="object-cover group-hover:scale-105 transition duration-500"
                   />
                   <span className="absolute top-4 right-4 bg-carmine text-bone text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border border-carmine/20 shadow-md">

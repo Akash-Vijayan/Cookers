@@ -50,10 +50,11 @@ export default function AboutPage() {
       <section className="relative pt-36 pb-16 lg:pt-48 lg:pb-24 bg-card/45 border-b border-border/45 backdrop-blur-sm overflow-hidden">
         <div className="absolute inset-0 opacity-20 pointer-events-none -z-10">
           <Image
-            src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1920&q=80"
+            src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=70"
             alt="About Banner Background"
             fill
             sizes="100vw"
+            quality={70}
             className="object-cover object-center"
           />
         </div>
@@ -104,10 +105,11 @@ export default function AboutPage() {
         </div>
         <div className="relative h-[400px] w-full rounded-3xl overflow-hidden shadow-xl border border-border">
           <Image
-            src="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80"
+            src="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=75"
             alt="Chefs preparing catering feast"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
+            quality={75}
             className="object-cover"
           />
         </div>

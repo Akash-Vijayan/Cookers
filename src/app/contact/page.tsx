@@ -21,10 +21,11 @@ export default function ContactPage() {
       <section className="relative pt-36 pb-16 lg:pt-48 lg:pb-24 bg-card/45 border-b border-border/45 backdrop-blur-sm text-center mb-16 overflow-hidden">
         <div className="absolute inset-0 opacity-10 pointer-events-none -z-10">
           <Image
-            src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1920&q=80"
+            src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=70"
             alt="Contact Background"
             fill
             sizes="100vw"
+            quality={70}
             className="object-cover object-center"
           />
         </div>

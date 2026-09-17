@@ -185,6 +185,8 @@ export default function GalleryClient({ initialItems }: GalleryClientProps) {
                   alt={item.caption}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  quality={80}
+                  loading="lazy"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 

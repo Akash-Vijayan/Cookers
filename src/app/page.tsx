@@ -122,6 +122,7 @@ export default function HomePage() {
             alt="Kanniyakumari Coastal Background - DD Cookers"
             fill
             priority
+            quality={85}
             sizes="100vw"
             className="object-cover object-center sm:object-bottom filter contrast-[1.02]"
           />
@@ -144,6 +145,8 @@ export default function HomePage() {
                   width={560}
                   height={720}
                   priority
+                  quality={85}
+                  sizes="(max-width: 1024px) 100vw, 540px"
                   className="w-full h-auto object-contain filter brightness-[1.02] contrast-[1.04] scale-[1.06] origin-bottom [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)]"
                 />
               </div>

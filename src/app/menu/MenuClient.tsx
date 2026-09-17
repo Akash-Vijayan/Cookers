@@ -191,6 +191,8 @@ const MenuItemImage = ({ src, name }: { src?: string; name: string }) => {
       alt={name}
       fill
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+      quality={80}
+      loading="lazy"
       onError={() => setHasError(true)}
       className="object-cover object-center transform group-hover:scale-102 transition-transform duration-500 rounded-none"
     />
