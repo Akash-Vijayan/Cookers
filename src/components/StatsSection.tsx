@@ -91,7 +91,7 @@ export default function StatsSection() {
 
   return (
     <section className="py-8 md:py-12 bg-stats-bg border-y border-border/60 relative z-10 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-y sm:divide-y-0 lg:divide-x divide-border/40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center divide-y-0 lg:divide-x divide-border/40">
         {stats.map((item) => (
           <CounterItem
             key={item.label}

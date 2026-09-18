@@ -80,8 +80,14 @@ export default function FloatingWidgets() {
 
       {/* 3. POPUP ENQUIRY MODAL */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 bg-[#140404]/90 backdrop-blur-xs flex justify-end animate-fade-in">
-          <div className="bg-[#240808] border-l border-bordeaux/40 w-full max-w-lg h-full p-8 md:p-10 shadow-2xl relative flex flex-col justify-between overflow-y-auto animate-slide-left">
+        <div 
+          onClick={closeQuote}
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-end animate-fade-in"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="bg-card border-l border-border w-full max-w-lg h-full p-8 md:p-10 shadow-2xl relative flex flex-col justify-between overflow-y-auto animate-slide-left text-foreground"
+          >
             
             <div className="space-y-8">
               {/* Header */}
@@ -90,8 +96,8 @@ export default function FloatingWidgets() {
                   <span className="text-brass text-[10px] font-black uppercase tracking-widest block">
                     Bespoke Inquiries
                   </span>
-                  <h3 className="font-serif italic text-3xl text-bone">Create Your Feast</h3>
-                  <p className="text-xs text-foreground/60 leading-relaxed">
+                  <h3 className="font-serif italic text-3xl text-foreground">Create Your Feast</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     Provide event details for your celebration in Tirunelveli, and our director chef will contact you directly.
                   </p>
                 </div>
@@ -109,8 +115,8 @@ export default function FloatingWidgets() {
                   <div className="mx-auto inline-flex bg-carmine/15 p-4 rounded-full text-carmine animate-bounce">
                     <CheckCircle2 className="h-10 w-10" />
                   </div>
-                  <h4 className="font-serif italic text-2xl text-bone">Request Received</h4>
-                  <p className="text-sm text-foreground/60 max-w-xs mx-auto leading-relaxed">
+                  <h4 className="font-serif italic text-2xl text-foreground">Request Received</h4>
+                  <p className="text-sm text-muted-foreground max-w-xs mx-auto leading-relaxed">
                     Thank you. We will evaluate our availability and reach out to you within 12 hours.
                   </p>
                 </div>

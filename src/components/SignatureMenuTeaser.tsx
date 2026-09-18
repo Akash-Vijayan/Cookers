@@ -132,16 +132,16 @@ export default function SignatureMenuTeaser() {
   return (
     <div className="w-full">
       {/* Tab Navigation Pill Bar */}
-      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10">
+      <div className="flex items-center gap-2 sm:gap-3 mb-10 overflow-x-auto no-scrollbar scroll-smooth flex-nowrap sm:flex-wrap justify-start sm:justify-center px-2 py-1">
         {MENU_PACKAGES.map((pkg) => {
           const isActive = pkg.id === activeTab;
           return (
             <button
               key={pkg.id}
               onClick={() => setActiveTab(pkg.id)}
-              className={`px-5 py-3 rounded-full text-xs font-bold transition-all duration-300 flex items-center space-x-2 border ${
+              className={`px-4 sm:px-5 py-2.5 sm:py-3 rounded-full text-xs font-bold transition-all duration-300 flex items-center space-x-2 border whitespace-nowrap shrink-0 min-h-[44px] cursor-pointer ${
                 isActive
-                  ? 'bg-carmine text-white border-carmine shadow-lg shadow-carmine/25 scale-105'
+                  ? 'bg-carmine text-white border-carmine shadow-lg shadow-carmine/25 scale-[1.02] sm:scale-105'
                   : 'bg-card/80 text-foreground/80 border-border hover:border-brass/50 hover:text-brass hover:bg-card'
               }`}
             >

@@ -336,15 +336,15 @@ export default function MenuClient({ initialItems }: MenuClientProps) {
         </div>
 
         {/* Category Underline Selector (Text-Only brass active line) */}
-        <div className="flex justify-center flex-wrap gap-x-8 gap-y-4 border-b border-border/40 pb-4">
+        <div className="flex justify-start sm:justify-center overflow-x-auto no-scrollbar gap-x-6 sm:gap-x-8 border-b border-border/40 pb-4 px-2">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat;
             return (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`pb-2 text-xs md:text-sm font-bold tracking-widest uppercase transition-all duration-300 cursor-pointer relative whitespace-nowrap ${
-                  isActive ? 'text-brass' : 'text-foreground/60 hover:text-brass'
+                className={`pb-2 text-xs md:text-sm font-bold tracking-widest uppercase transition-all duration-300 cursor-pointer relative whitespace-nowrap shrink-0 ${
+                  isActive ? 'text-brass font-black' : 'text-foreground/60 hover:text-brass'
                 }`}
               >
                 {cat}

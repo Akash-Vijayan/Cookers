@@ -147,7 +147,7 @@ export default function GalleryClient({ initialItems }: GalleryClientProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
         
         {/* Category Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-12">
+        <div className="flex items-center gap-2 md:gap-3 mb-12 overflow-x-auto no-scrollbar scroll-smooth flex-nowrap sm:flex-wrap justify-start sm:justify-center px-2 py-1">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -155,9 +155,9 @@ export default function GalleryClient({ initialItems }: GalleryClientProps) {
                 setActiveTab(cat);
                 setLightboxIndex(null);
               }}
-              className={`px-5 py-2.5 rounded-full text-xs font-extrabold tracking-wider uppercase transition cursor-pointer ${
+              className={`px-4 sm:px-5 py-2.5 rounded-full text-xs font-extrabold tracking-wider uppercase transition cursor-pointer shrink-0 whitespace-nowrap min-h-[44px] ${
                 activeTab === cat
-                  ? 'bg-carmine text-bone shadow-md'
+                  ? 'bg-carmine text-bone shadow-md scale-[1.02] sm:scale-105'
                   : 'bg-card border border-border text-foreground/75 hover:border-brass/50 hover:text-brass'
               }`}
             >

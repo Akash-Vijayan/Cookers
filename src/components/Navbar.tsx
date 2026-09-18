@@ -75,8 +75,8 @@ export default function Navbar() {
           <div className="flex justify-between items-center h-16">
             
             {/* Logo on Left */}
-            <Link href="/" className="flex items-center space-x-3 group">
-              <div className="relative h-12 w-14 flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105">
+            <Link href="/" className="flex items-center space-x-2.5 sm:space-x-3 group">
+              <div className="relative h-10 w-12 sm:h-12 sm:w-14 flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src="/logo.png"
                   alt="DD Cookers Logo"
@@ -86,7 +86,7 @@ export default function Navbar() {
                   priority
                 />
               </div>
-              <span className="text-xl md:text-2xl font-bold tracking-wider uppercase font-serif text-foreground group-hover:text-brass transition duration-300">
+              <span className="text-lg sm:text-xl md:text-2xl font-bold tracking-wider uppercase font-serif text-foreground group-hover:text-brass transition duration-300">
                 DD Cookers
               </span>
             </Link>
@@ -126,16 +126,16 @@ export default function Navbar() {
             <div className="flex lg:hidden items-center space-x-2">
               <button
                 onClick={openQuote}
-                className="px-3.5 py-2 border border-brass text-brass hover:bg-carmine hover:border-carmine hover:text-bone font-bold uppercase tracking-widest text-[9px] transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center"
+                className="px-3 py-2 border border-brass text-brass hover:bg-carmine hover:border-carmine hover:text-bone font-bold uppercase tracking-widest text-[9px] transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center rounded-lg"
               >
                 Inquire
               </button>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-3 border border-primary/20 rounded-none hover:bg-foreground/5 text-foreground/85 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="p-2.5 border border-border rounded-lg hover:bg-foreground/5 text-foreground cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors"
                 aria-label="Toggle navigation menu"
               >
-                {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {isOpen ? <X className="h-5 w-5 text-brass" /> : <Menu className="h-5 w-5" />}
               </button>
             </div>
  
@@ -143,47 +143,54 @@ export default function Navbar() {
         </div>
       </div>
  
-      {/* Mobile menu drawer */}
+      {/* Mobile menu backdrop & drawer */}
       {isOpen && (
-        <div className="lg:hidden bg-card border-t border-primary/10 animate-fade-in absolute w-full left-0 z-45 shadow-lg transition-colors duration-300">
-          <div className="px-4 pt-2 pb-6 space-y-2">
-            {navLinks.map((link) => (
-              <div key={link.name}>
-                <Link
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`block px-4 py-3.5 text-sm uppercase tracking-wider font-bold min-h-[44px] ${
-                    isActive(link.href)
-                      ? 'text-primary bg-primary/5'
-                      : 'hover:bg-foreground/5 text-foreground/80'
-                  }`}
+        <>
+          <div
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 top-[60px] sm:top-[68px] bg-black/40 backdrop-blur-xs z-40 lg:hidden animate-fade-in"
+          />
+          <div className="lg:hidden bg-card border-b border-border shadow-2xl animate-fade-in absolute w-full left-0 z-45 transition-colors duration-300 rounded-b-2xl">
+            <div className="px-5 pt-3 pb-6 space-y-2">
+              {navLinks.map((link) => (
+                <div key={link.name}>
+                  <Link
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={`flex items-center justify-between px-4 py-3 text-xs uppercase tracking-wider font-bold rounded-xl min-h-[44px] transition-all ${
+                      isActive(link.href)
+                        ? 'text-brass bg-brass/10 border-l-4 border-brass font-extrabold'
+                        : 'hover:bg-foreground/5 text-foreground/80'
+                    }`}
+                  >
+                    <span>{link.name}</span>
+                    {isActive(link.href) && <span className="h-2 w-2 rounded-full bg-brass" />}
+                  </Link>
+                </div>
+              ))}
+              <hr className="border-border/60 my-3" />
+              <div className="space-y-2.5 pt-1">
+                <a
+                  href="tel:+91 94431 56789"
+                  className="flex items-center justify-center space-x-2 py-3 border border-border rounded-xl text-xs uppercase tracking-widest font-bold text-foreground hover:bg-foreground/5 min-h-[44px] transition-colors"
                 >
-                  {link.name}
-                </Link>
+                  <Phone className="h-4 w-4 text-brass" />
+                  <span>+91 94431 56789</span>
+                </a>
+                <button
+                  onClick={() => {
+                    setIsOpen(false);
+                    openQuote();
+                  }}
+                  className="w-full flex items-center justify-center space-x-2 px-4 py-3.5 bg-carmine text-white rounded-xl font-bold uppercase tracking-widest text-[10px] cursor-pointer min-h-[44px] hover:brightness-105 shadow-md shadow-carmine/20 transition-all"
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  <span>Request Instant Quote</span>
+                </button>
               </div>
-            ))}
-            <hr className="border-primary/10 my-3" />
-            <div className="space-y-3 pt-2">
-              <a
-                href="tel:+91 94431 56789"
-                className="flex items-center justify-center space-x-2 py-3.5 border border-primary/25 rounded-none text-xs uppercase tracking-widest font-bold text-foreground hover:bg-foreground/5 min-h-[44px]"
-              >
-                <Phone className="h-4 w-4 text-primary" />
-                <span>+91 94431 56789</span>
-              </a>
-              <button
-                onClick={() => {
-                  setIsOpen(false);
-                  openQuote();
-                }}
-                className="w-full flex items-center justify-center space-x-2 px-4 py-3.5 bg-carmine text-bone font-bold uppercase tracking-widest text-[10px] cursor-pointer min-h-[44px] hover:brightness-105"
-              >
-                <MessageSquare className="h-4 w-4" />
-                <span>Request Quote</span>
-              </button>
             </div>
           </div>
-        </div>
+        </>
       )}
 
     </header>
